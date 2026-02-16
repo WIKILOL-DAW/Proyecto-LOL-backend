@@ -25,7 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3"
   },
-   "devDependencies": {
+  "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
