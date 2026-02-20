@@ -1,3 +1,8 @@
-export default interface Jugador{
-    
+import { Posicion } from "../../Enum/Posicion";
+
+export default interface Jugador {
+
+    alias: string,
+    nacionalidad: string,
+    posicion: Posicion,
 }
