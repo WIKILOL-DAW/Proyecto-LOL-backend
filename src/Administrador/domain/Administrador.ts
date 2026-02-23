@@ -1,5 +1,5 @@
 export default interface Administrador{
-    alias: string,
+    alias?: string,
     correo: string,
     passwrd?: string
 }
