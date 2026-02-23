@@ -1,7 +1,7 @@
-import express, {Request, Response} from "express";
+import express, { request, Request, Response } from "express";
 import AdministradorUseCases from "../../application/Administrador.useCases";
 import AdministradorRepository from "../../domain/Administrador.repository";
-import AdministradorPostgresSQL from "../DB/Administrador.postgresSQL";
+import AdministradorPostgresSQL from "../db/Administrador.postgresSQL";
 import Administrador from "../../domain/Administrador";
 
 const administradorRepository: AdministradorRepository = new AdministradorPostgresSQL();
@@ -12,8 +12,9 @@ const administradorUseCases: AdministradorUseCases = new AdministradorUseCases(
 
 const router = express.Router();
 
-router.post("/registro", async(req: Request, res: Response) => {
-    const { alias ,correo , passwrd: passwrd} = req.body;
+router.post("/registro", async (req: Request, res: Response) => {
+
+    const { alias, correo, passwrd: passwrd } = req.body;
     const AdminPost = {
         alias,
         correo,
@@ -21,6 +22,18 @@ router.post("/registro", async(req: Request, res: Response) => {
     }
     const administrador: Administrador = await administradorUseCases.registro(AdminPost);
     res.send(administrador)
+})
+
+router.post("/login", async (request: Request, response: Response) => {
+
+    const { correo } = request.body;
+
+    const loginAdmin = {
+        correo
+    }
+
+    const administrador: Administrador = await administradorUseCases.login(loginAdmin);
+    response.send(administrador);
 })
 
 export default router;
