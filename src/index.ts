@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from "dotenv";
 import cors from "cors";
 
-//faltan los routers
+import routerAdministrador from "./Administrador/infrastructure/rest/Administrador.restController"
 
 dotenv.config();
 const port = process.env.PORT;
@@ -15,10 +15,8 @@ const app = express();
 app.use(express.json());
 app.use(cors(options));
 
-//routers
 const api = "api/";
-app.use(`/${api}usuarios`, );
-app.use(`/${api}tareas`, /*poner los routers*/);
+app.use(`/${api}admin`, routerAdministrador );
 
 app.listen(8080, () => {
     console.log('app corriendo');

@@ -1,21 +1,9 @@
 {
   "name": "proyecto-lol-backend",
   "version": "1.0.0",
-  "description": "",
-  "homepage": "https://github.com/AaronPiramide/Proyecto-LOL-backend#readme",
-  "bugs": {
-    "url": "https://github.com/AaronPiramide/Proyecto-LOL-backend/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AaronPiramide/Proyecto-LOL-backend.git"
-  },
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -25,7 +13,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3"
   },
-   "devDependencies": {
+  "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
