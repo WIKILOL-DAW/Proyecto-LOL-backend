@@ -3,7 +3,7 @@ import AdministradorUseCases from "../../application/Administrador.useCases";
 import AdministradorRepository from "../../domain/Administrador.repository";
 import AdministradorPostgresSQL from "../db/Administrador.postgresSQL";
 import Administrador from "../../domain/Administrador";
-import { createToken } from "../../../Context/security/auth";
+import { createToken } from "../../../context/security/auth";
 
 const administradorRepository: AdministradorRepository = new AdministradorPostgresSQL();
 
