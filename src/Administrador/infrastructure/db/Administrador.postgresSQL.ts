@@ -23,11 +23,14 @@ export default class AdministradorPostgresSQL implements administradorRepository
 
     async login(administrador: Administrador): Promise<Administrador> {
 
-        const select = `select * from administrador where correo = ${administrador.correo}`;
+        
+        const select = `select * from administrador where correo = '${administrador.correo}'`;
 
         const rows: any[] = await executeQuery(select);
 
         if (rows.length === 0) {
+            console.log( "*******************", rows[0]);
+            
             throw new Error("Usuario no encontrado");
 
         } else {
