@@ -17,11 +17,15 @@ export default class AdministradorUseCases {
     }
 
     async login(administrador: Administrador): Promise<Administrador> {
-
+        const passwrdCifrada = hash(administrador.passwrd);
+        const administradorDB = this.administradorRepository.login(administrador)
         if (!administrador.correo || !administrador.passwrd) {
             throw new Error("Correo o contraseña no encontrados")
-        }
+        }else if(passwrdCifrada === (await administradorDB).passwrd){
 
-        return this.administradorRepository.login(administrador);
+        }
+        
+
+        return ;
     }
 }
