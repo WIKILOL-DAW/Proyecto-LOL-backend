@@ -6,7 +6,7 @@ import routerAdministrador from "./Administrador/infrastructure/rest/Administrad
 
 dotenv.config();
 const port = process.env.PORT;
-const allowedOrigins = ["http://192.168.11.238:5174"];
+const allowedOrigins = ["http://localhost:5174" , "http://192.168.11.239:8080"];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
@@ -20,8 +20,4 @@ app.use(`/${api}admin`, routerAdministrador );
 
 app.listen(port, () => {
     console.log('app corriendo');
-})
-
-app.get("/hola", (req,res)=>{
-  res.send("hola")
 })
