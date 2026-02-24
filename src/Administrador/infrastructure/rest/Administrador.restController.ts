@@ -15,7 +15,10 @@ const router = express.Router();
 
 router.post("/registro", async (req: Request, res: Response) => {
 
-    const { alias, correo, passwrd: passwrd } = req.body;
+    console.log(req.body);
+    
+    const { alias, correo, passwrd } = req.body;
+    
     const AdminPost = {
         alias,
         correo,
