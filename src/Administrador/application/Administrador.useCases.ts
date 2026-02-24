@@ -7,7 +7,7 @@ export default class AdministradorUseCases {
     constructor(private administradorRepository: AdministradorRepository) { }
 
     async registro(administrador: Administrador): Promise<Administrador> {
-
+        console.log(administrador);
         if (!administrador.passwrd) throw new error("no passwrd")
 
         const pswCifrada = hash(administrador.passwrd);
