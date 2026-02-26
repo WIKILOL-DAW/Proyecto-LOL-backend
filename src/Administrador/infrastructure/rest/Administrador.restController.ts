@@ -13,11 +13,9 @@ const administradorUseCases: AdministradorUseCases = new AdministradorUseCases(
 
 const router = express.Router();
 
-router.post("/registro", async (req: Request, res: Response) => {
-
-    console.log(req.body);
+router.post("/registro", async (request: Request, response: Response) => {
     
-    const { alias, correo, passwrd } = req.body;
+    const { alias, correo, passwrd } = request.body;
     
     const AdminPost = {
         alias,
@@ -25,11 +23,10 @@ router.post("/registro", async (req: Request, res: Response) => {
         passwrd
     }
     const administrador: Administrador = await administradorUseCases.registro(AdminPost);
-    res.send(administrador)
+    response.send(administrador)
 })
 
 router.post("/login", async (request: Request, response: Response) => {
-
 
     const { correo, passwrd } = request.body;
 
@@ -37,9 +34,26 @@ router.post("/login", async (request: Request, response: Response) => {
         correo,
         passwrd
     }
-    const administrador: Administrador = await administradorUseCases.login(loginAdmin);
-    const token = createToken(administrador);
-    response.json(token);
+
+    const administrador: Administrador |false  = await administradorUseCases.login(loginAdmin);
+    console.log(administrador,"Controller");
+    if (!administrador) {
+        response.status(400).send({
+            message: "Admin no encontrado",
+            token: null
+        })
+    }else if(administrador.passwrd === null){
+        response.status(400).send({
+            message: "Contraseña incorrecte",
+            token: null
+        })
+    }else{
+        const token = createToken(administrador);
+        response.status(200).send({
+            message: "Credenciales correctas",
+            token: token
+        })
+    }
 })
 
 export default router;
