@@ -2,6 +2,7 @@ import Administrador from "../domain/Administrador";
 import AdministradorRepository from "../domain/Administrador.repository";
 import { error } from "console";
 import { hash } from "../../context/security/encrypter"
+import bcrypt from "bcrypt";
 
 export default class AdministradorUseCases {
     constructor(private administradorRepository: AdministradorRepository) { }
@@ -17,15 +18,18 @@ export default class AdministradorUseCases {
     }
 
     async login(administrador: Administrador): Promise<Administrador | false > {
-        const passwrdCifrada = hash(administrador.passwrd);
-        const administradorDB = this.administradorRepository.login(administrador)
-        console.log(passwrdCifrada);
-        console.log((await administradorDB).passwrd);
+        const administradorDB = await this.administradorRepository.login(administrador)
+
+        const coincide = await bcrypt.compare(
+        administrador.passwrd.toString(),   
+        administradorDB.passwrd.toString()  
+    );
+
         if (!administrador.correo) {
             return false;
-        }else if(!(passwrdCifrada === (await administradorDB).passwrd)){
-    
-           (await administradorDB).passwrd  = null
+
+        }else if(!coincide){
+           administradorDB.passwrd  = null
         }
         return administradorDB;
     }
