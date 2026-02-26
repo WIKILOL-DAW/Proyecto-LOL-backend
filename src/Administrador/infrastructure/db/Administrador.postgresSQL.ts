@@ -29,14 +29,12 @@ export default class AdministradorPostgresSQL implements administradorRepository
         const rows: any[] = await executeQuery(select);
 
         if (rows.length === 0) {
-            console.log( "*******************", rows[0]);
             
             throw new Error("Usuario no encontrado");
 
         } else {
-            
             const administradorDB: Administrador = {
-                correo: rows[0].email,
+                correo: rows[0].correo,
                 passwrd: rows[0].passwrd
             }
             return administradorDB;

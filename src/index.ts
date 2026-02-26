@@ -6,7 +6,7 @@ import routerAdministrador from "./Administrador/infrastructure/rest/Administrad
 
 dotenv.config();
 const port = process.env.PORT;
-const allowedOrigins = ["http://localhost:5174" , "http://192.168.11.239:8080"];
+const allowedOrigins = ["http://localhost:5173" , "http://192.168.11.238:8080"];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
