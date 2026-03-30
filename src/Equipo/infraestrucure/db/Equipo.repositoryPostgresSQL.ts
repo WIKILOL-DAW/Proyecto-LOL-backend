@@ -6,13 +6,18 @@ export default class EquipoPostgresSQL implements EquipoRepository {
 
     async insertarEquipo(equipo: Equipo): Promise<Equipo> {
 
-        const insert = `insert into equipo (nombre) values ('${equipo.nombre}')`;
+        const insert = `insert into equipo (nombre , nombre_liga) values ('${equipo.nombre}', '${equipo.nombreLiga}') returning *`;
 
         const rows: any[] = await executeQuery(insert);
 
         const equipoDB = {
-            nombre: rows[0].nombre
+            nombre: rows[0].nombre,
+            nombreLiga: rows[0].nombreLiga
         }
+
+        console.log("ROWS INSERT:", rows);
+
+
 
         return equipoDB;
     }

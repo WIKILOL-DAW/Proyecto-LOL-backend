@@ -1,4 +1,5 @@
 
 export default interface Equipo {
-    nombre: string
+    nombre: string,
+    nombreLiga: string
 }
