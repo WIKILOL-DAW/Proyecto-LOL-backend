@@ -14,10 +14,11 @@ const router = express.Router();
 router.post(`/insertarEquipo`, async (request: Request, response: Response) => {
 
     try {
-        const { nombre } = request.body;
+        const { nombre , nombreLiga} = request.body;
 
         const equipoPost = {
-            nombre
+            nombre,
+            nombreLiga
         }
 
         const equipo: Equipo = await equipoUsesCases.insertarEquipo(equipoPost);
@@ -27,8 +28,12 @@ router.post(`/insertarEquipo`, async (request: Request, response: Response) => {
         })
 
     } catch (error) {
+        console.log("ERROR TRY: " , error);
+        
         response.status(500).send({
             message: "Error al insertar el equipo"
         })
     }
 });
+
+export default router
