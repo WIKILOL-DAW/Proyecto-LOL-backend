@@ -5,6 +5,7 @@ import cors from "cors";
 import routerAdministrador from "./Administrador/infrastructure/rest/Administrador.restController"
 import routerEquipo from './Equipo/infraestrucure/rest/Equipo.restController'
 import routerCampeon from './Campeon/infraestructure/rest/Campeon.restController'
+import routerJugador from './Jugador/infraestructure/rest/Jugador.restController'
 
 dotenv.config();
 const port = process.env.PORT;
@@ -21,6 +22,7 @@ const api = "api/";
 app.use(`/${api}admin`, routerAdministrador );
 app.use(`/${api}equipo` , routerEquipo);
 app.use(`/${api}campeon`, routerCampeon);
+app.use(`/${api}jugador` , routerJugador);
 
 app.listen(port, () => {
     console.log('app corriendo por el puerto: ' + port);
