@@ -14,11 +14,6 @@ export default class EquipoPostgresSQL implements EquipoRepository {
             nombre: rows[0].nombre,
             nombreLiga: rows[0].nombreLiga
         }
-
-        console.log("ROWS INSERT:", rows);
-
-
-
         return equipoDB;
     }
 }
