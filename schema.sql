@@ -63,7 +63,7 @@ CREATE TABLE partida (
     equipo_azul VARCHAR (200),
     equipo_ganador VARCHAR,
     kills_equipo_azul INTEGER,
-    kills_equipo_rojo INTEGER
+    kills_equipo_rojo INTEGER,
     liga VARCHAR(200),
     FOREIGN KEY (liga) REFERENCES liga(nombre),
     FOREIGN KEY (equipo_rojo) REFERENCES equipo(nombre),
