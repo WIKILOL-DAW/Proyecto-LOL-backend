@@ -7,9 +7,13 @@ export default class CampeonUsesCases {
 
     async insertarCampeon(campeon: Campeon): Promise<Campeon> {
 
-        if (!campeon.nombre || !campeon.posicion) {
-            throw new Error("El nombre o la posicion no pueden estar en blanco");
+        if (!campeon.nombre || !campeon.posicion || !campeon.descripcion || !campeon.imagen) {
+            throw new Error("Campeon no puede tener espacios en blanco");
         }
         return this.campeonRepository.insertarCampeon(campeon);
+    }
+
+    async verCampeones(): Promise<Campeon[]> {
+        return this.campeonRepository.verCampeones();
     }
 }

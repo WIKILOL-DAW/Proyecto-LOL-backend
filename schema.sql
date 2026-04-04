@@ -1,5 +1,5 @@
 -- 1. TYPE primero
-CREATE TYPE posicion AS ENUM ('TOP', 'JGL', 'MID', 'ADC', 'SUP');
+CREATE TYPE posicion AS ENUM ('TOP', 'JGL', 'MID', 'ADC', 'SUPP');
 CREATE TYPE split AS ENUM ('WINTER', 'SPRING' , 'SUMMER');
 -- 2. LIGAS Y EQUIPOS
 CREATE TABLE liga (
@@ -43,7 +43,9 @@ CREATE TABLE jugador (
 
 CREATE TABLE campeon (
     nombre VARCHAR(200) PRIMARY KEY,
-    posicion posicion
+    posicion posicion,
+    descripcion TEXT,
+    imagen TEXT
 );
 
 
