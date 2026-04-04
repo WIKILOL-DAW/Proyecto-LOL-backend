@@ -17,11 +17,13 @@ router.post(`/insertarCampeon`, async (request: Request, response: Response) => 
 
     try {
 
-        const { nombre, posicion } = request.body;
+        const { nombre, posicion, descripcion , imagen} = request.body;
 
         const campeonPost = {
             nombre,
-            posicion
+            posicion,
+            descripcion,
+            imagen
         }
 
         const campeon: Campeon = await campeonUsesCases.insertarCampeon(campeonPost);
@@ -35,6 +37,23 @@ router.post(`/insertarCampeon`, async (request: Request, response: Response) => 
         response.status(500).json({
 
             message: "Error al crar un nuevo campeon"
+        });
+    }
+});
+
+
+router.get(`/verCampeones`, async (request: Request, response: Response) => {
+
+    try {
+        const campeon = await campeonUsesCases.verCampeones();
+        response.status(200).json({
+            campeon
+        });
+
+    } catch (error) {
+        console.log("ERROR: ", error);
+        response.status(500).json({
+            message: "Error al mostrrar los campeones"
         });
     }
 });
