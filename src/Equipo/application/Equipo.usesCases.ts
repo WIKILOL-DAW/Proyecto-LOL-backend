@@ -13,4 +13,8 @@ export default class EquipoUsesCases {
 
         return this.equipoRepository.insertarEquipo(equipo);
     }
+
+    async verEquiposSegunLiga(nombreLiga: string): Promise<Equipo[]> {
+        return this.equipoRepository.verEquiposSegunLiga(nombreLiga);
+    }
 }

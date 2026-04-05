@@ -16,4 +16,11 @@ export default class EquipoPostgresSQL implements EquipoRepository {
         }
         return equipoDB;
     }
+
+    async verEquiposSegunLiga(nombreLiga: string): Promise<Equipo[]> {
+
+        const select = `select * from equipo where nombre_liga = '${nombreLiga}'`;
+        const resultado: any[] = await executeQuery(select);
+        return resultado;
+    }
 }
