@@ -10,11 +10,14 @@ export default class EquipoUsesCases {
         if (!equipo.nombre) {
             throw new Error("El equipo debe tener nombre");
         }
-
         return this.equipoRepository.insertarEquipo(equipo);
     }
 
     async verEquiposSegunLiga(nombreLiga: string): Promise<Equipo[]> {
         return this.equipoRepository.verEquiposSegunLiga(nombreLiga);
+    }
+
+    async borrarEquipoSegunNombre(equipo: Equipo): Promise<Equipo> {
+        return this.equipoRepository.borrarEquipoSegunNombre(equipo);
     }
 }
