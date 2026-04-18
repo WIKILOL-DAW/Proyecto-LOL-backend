@@ -20,9 +20,14 @@ export default class EquipoPostgresSQL implements EquipoRepository {
     }
 
     async verEquiposSegunLiga(nombreLiga: string): Promise<Equipo[]> {
-
         const select = `select * from equipo where nombre_liga = '${nombreLiga}'`;
         const resultado: any[] = await executeQuery(select);
         return resultado;
+    }
+
+    async borrarEquipoSegunNombre(equipo: Equipo): Promise<Equipo> {
+        const borrar = `delete from equipo where nombre = ${equipo.nombre}`;
+        await executeQuery(borrar);
+        return equipo;
     }
 }
