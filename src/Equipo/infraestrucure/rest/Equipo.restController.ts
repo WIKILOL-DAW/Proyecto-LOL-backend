@@ -14,11 +14,13 @@ const router = express.Router();
 router.post(`/insertarEquipo`, async (request: Request, response: Response) => {
 
     try {
-        const { nombre, nombreLiga } = request.body;
+        const { nombre, nombreLiga, descripcion, imagen } = request.body;
 
         const equipoPost = {
             nombre,
-            nombreLiga
+            nombreLiga,
+            descripcion,
+            imagen
         }
 
         const equipo: Equipo = await equipoUsesCases.insertarEquipo(equipoPost);
@@ -37,13 +39,12 @@ router.post(`/insertarEquipo`, async (request: Request, response: Response) => {
 });
 
 
-router.get(`/verEquipos`, async (request: Request, response: Response) => {
-
+router.get(`/verEquipos/:liga`, async (request: Request, response: Response) => {
     try {
+        const { liga } = request.params;
 
-        const { nombreLiga } = request.body;
+        const verEquipos = await equipoUsesCases.verEquiposSegunLiga(liga);
 
-        const verEquipos = await equipoUsesCases.verEquiposSegunLiga(nombreLiga);
         response.status(200).json({
             verEquipos
         });
@@ -52,9 +53,8 @@ router.get(`/verEquipos`, async (request: Request, response: Response) => {
         console.log("ERROR: ", error);
         response.status(500).json({
             message: "Error al ver los equipos"
-        })
+        });
     }
-
 });
 
 export default router
