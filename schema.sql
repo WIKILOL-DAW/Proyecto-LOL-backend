@@ -10,7 +10,7 @@ CREATE TABLE liga (
 CREATE TABLE equipo (
     nombre VARCHAR(200) PRIMARY KEY,
     descripcion TEXT,
-    imagen TEXT
+    imagen TEXT,
     nombre_liga VARCHAR(200),
     FOREIGN KEY (nombre_liga) REFERENCES liga(nombre)
 );
