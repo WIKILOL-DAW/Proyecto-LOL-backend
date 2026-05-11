@@ -3,6 +3,7 @@ import EquipoRepository from "../../domain/Equipo.repository";
 import EquipoPostgresSQL from "../db/Equipo.repositoryPostgresSQL";
 import EquipoUsesCases from "../../application/Equipo.usesCases";
 import Equipo from "../../domain/Equipo";
+import e from "express";
 
 const equipoRepository: EquipoRepository = new EquipoPostgresSQL();
 const equipoUsesCases: EquipoUsesCases = new EquipoUsesCases(
@@ -75,6 +76,27 @@ router.delete(`/borrarEquipo/:nombre`, async (request: Request, response: Respon
         console.log("ERROR: ", error);
         response.status(500).json({
             message: "Error al borrar el equipo"
+        });
+    }
+});
+
+router.put(`/actualizarNombreEquipo/:nombre`, async (request: Request, response: Response) => {
+
+    try {
+        const { nombre } = request.params;
+        const equipo: Equipo = {
+            nombre
+        }
+
+        const actualizarEquipo = await equipoUsesCases.cambiarNombreEquipo(equipo);
+        response.status(200).json({
+            actualizarEquipo
+        });
+
+    } catch (error) {
+        console.log("ERROR: ", error);
+        response.status(500).json({
+            message: "Error al actualizar equipo"
         });
     }
 });
