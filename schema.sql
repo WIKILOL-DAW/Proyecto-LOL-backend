@@ -80,5 +80,10 @@ CREATE TABLE administrador (
     alias VARCHAR (100) PRIMARY KEY,
     correo VARCHAR (100),
     passwrd VARCHAR (250)
+);
 
+CREATE TABLE Noticia (
+    id SERIAL PRIMARY KEY,
+    titular VARCHAR (200),
+    contenido TEXT
 );
