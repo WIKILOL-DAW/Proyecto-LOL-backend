@@ -24,4 +24,7 @@ export default class EquipoUsesCases {
     async cambiarNombreEquipo(equipo: Equipo): Promise<Equipo> {
         return this.equipoRepository.cambiarNombreEquipo(equipo);
     }
+    async verTodosLosEquipos(): Promise<Equipo[]>{
+        return this.equipoRepository.verTodosLosEquipos();
+    }
 }

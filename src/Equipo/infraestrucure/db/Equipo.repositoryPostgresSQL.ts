@@ -26,7 +26,7 @@ export default class EquipoPostgresSQL implements EquipoRepository {
     }
 
     async borrarEquipoSegunNombre(equipo: Equipo): Promise<Equipo> {
-        const borrar = `delete from equipo where nombre = ${equipo.nombre}`;
+        const borrar = `delete from equipo where nombre = '${equipo.nombre}'`;
         await executeQuery(borrar);
         return equipo;
     }
@@ -36,5 +36,11 @@ export default class EquipoPostgresSQL implements EquipoRepository {
         const actualizar = `update equipo set nombre = ? where nombre = '${equipo.nombre}'`;
         const equipoActualizado: any = await executeQuery(actualizar);
         return equipoActualizado;
+    }
+
+    async verTodosLosEquipos(): Promise<Equipo[]> {
+        const select = `select * from equipo`;
+        const resultado: any[] = await executeQuery(select);
+        return resultado;
     }
 }

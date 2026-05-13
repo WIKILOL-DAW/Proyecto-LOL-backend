@@ -5,4 +5,5 @@ export default interface EquipoRepository {
     verEquiposSegunLiga(nombreLiga: string): Promise<Equipo[]>;
     borrarEquipoSegunNombre(equipo: Equipo): Promise<Equipo>;
     cambiarNombreEquipo(equipo: Equipo): Promise<Equipo>;
+    verTodosLosEquipos( ): Promise<Equipo[]>;
 }
