@@ -40,6 +40,7 @@ CREATE TABLE jugador (
     nacionalidad VARCHAR(200),
     posicion posicion,
     nombre_equipo VARCHAR(200),
+    imagen TEXT
     FOREIGN KEY (nombre_equipo) REFERENCES equipo(nombre)
 );
 
