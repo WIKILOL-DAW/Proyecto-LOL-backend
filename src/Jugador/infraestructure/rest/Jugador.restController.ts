@@ -60,4 +60,26 @@ router.get(`/verJugadores`, async (request: Request, response: Response) => {
     }
 
 });
+
+router.delete(`/borrarJugador/:alias`, async (request: Request, response: Response) => {
+
+    try {
+
+        const { alias } = request.params;
+
+        const jugador: Jugador = {
+            alias
+        }
+        const borrarEquipo = await jugadorUsesCases.borrarJugadorSegunNombre(jugador);
+        response.status(200).json({
+            borrarEquipo
+        });
+
+    } catch (error) {
+        console.log("ERROR: ", error);
+        response.status(500).json({
+            message: "Error al borrar el jugador"
+        });
+    }
+});
 export default router

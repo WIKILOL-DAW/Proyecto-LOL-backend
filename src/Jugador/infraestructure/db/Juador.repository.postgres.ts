@@ -26,4 +26,11 @@ export default class JugadorPostgresSQL implements JugadorRepository {
         const resultado: any[] = await executeQuery(select);
         return resultado;
     }
+
+    async borrarJugadorSegunNombre(jugador: Jugador): Promise<Jugador> {
+
+        const borrado = `delete from jugador where alias = '${jugador.alias}'`;
+        await executeQuery(borrado);
+        return jugador;
+    }
 }
