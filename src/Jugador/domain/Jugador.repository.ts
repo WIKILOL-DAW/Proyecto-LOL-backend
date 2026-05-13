@@ -5,4 +5,5 @@ export default interface JugadorRepository {
 
     insertarJugador(jugador: Jugador): Promise<Jugador>;
     verJugadores():Promise<Jugador[]>;
+    borrarJugadorSegunNombre(jugador: Jugador):Promise<Jugador>;
 }

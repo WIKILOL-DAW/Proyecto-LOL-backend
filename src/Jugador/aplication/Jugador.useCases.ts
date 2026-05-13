@@ -16,4 +16,7 @@ export default class JugadorUsesCases {
     async verJugadores(): Promise<Jugador[]> {
         return this.jugadorRepository.verJugadores();
     }
+    async borrarJugadorSegunNombre(jugador: Jugador): Promise<Jugador> {
+        return this.jugadorRepository.borrarJugadorSegunNombre(jugador);
+    }
 }
