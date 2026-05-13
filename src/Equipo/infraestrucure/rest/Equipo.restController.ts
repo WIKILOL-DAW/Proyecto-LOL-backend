@@ -3,7 +3,7 @@ import EquipoRepository from "../../domain/Equipo.repository";
 import EquipoPostgresSQL from "../db/Equipo.repositoryPostgresSQL";
 import EquipoUsesCases from "../../application/Equipo.usesCases";
 import Equipo from "../../domain/Equipo";
-import e from "express";
+
 
 const equipoRepository: EquipoRepository = new EquipoPostgresSQL();
 const equipoUsesCases: EquipoUsesCases = new EquipoUsesCases(
@@ -46,6 +46,22 @@ router.get(`/verEquipos/:liga`, async (request: Request, response: Response) => 
 
         const verEquipos = await equipoUsesCases.verEquiposSegunLiga(liga);
 
+        response.status(200).json({
+            verEquipos
+        });
+
+    } catch (error) {
+        console.log("ERROR: ", error);
+        response.status(500).json({
+            message: "Error al ver los equipos"
+        });
+    }
+});
+
+router.get(`/verEquipos`, async (request: Request, response: Response) => {
+    try {
+
+        const verEquipos = await equipoUsesCases.verTodosLosEquipos();
         response.status(200).json({
             verEquipos
         });
