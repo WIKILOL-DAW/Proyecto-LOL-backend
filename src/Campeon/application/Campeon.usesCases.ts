@@ -16,4 +16,8 @@ export default class CampeonUsesCases {
     async verCampeones(): Promise<Campeon[]> {
         return this.campeonRepository.verCampeones();
     }
+
+    async modificarCampeon(campeon: Campeon): Promise<Campeon> {
+        return this.campeonRepository.modificarCampeon(campeon);
+    }
 }
