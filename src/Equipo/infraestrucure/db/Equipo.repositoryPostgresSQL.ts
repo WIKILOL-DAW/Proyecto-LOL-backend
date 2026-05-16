@@ -31,16 +31,24 @@ export default class EquipoPostgresSQL implements EquipoRepository {
         return equipo;
     }
 
-    async cambiarNombreEquipo(equipo: Equipo): Promise<Equipo> {
-
-        const actualizar = `update equipo set nombre = ? where nombre = '${equipo.nombre}'`;
-        const equipoActualizado: any = await executeQuery(actualizar);
-        return equipoActualizado;
-    }
-
     async verTodosLosEquipos(): Promise<Equipo[]> {
         const select = `select * from equipo`;
         const resultado: any[] = await executeQuery(select);
         return resultado;
+    }
+
+    async modificarEquipo(equipo: Equipo): Promise<Equipo> {
+
+        const update = ` update equipo set nombre = $1, descripcion = $2, imagen = $3 
+        where id = $4 RETURNING *`;
+        const parametros = [
+            equipo.nombre,
+            equipo.descripcion,
+            equipo.imagen,
+            equipo.id
+        ];
+
+        const resultado: any = await executeQuery(update, parametros);
+        return resultado
     }
 }

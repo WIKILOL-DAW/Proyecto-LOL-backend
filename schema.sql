@@ -8,12 +8,14 @@ CREATE TABLE liga (
 );
 
 CREATE TABLE equipo (
-    nombre VARCHAR(200) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(200) UNIQUE,
     descripcion TEXT,
     imagen TEXT,
     nombre_liga VARCHAR(200),
     FOREIGN KEY (nombre_liga) REFERENCES liga(nombre)
 );
+
 
 CREATE TABLE campeonato_internacional(
 
@@ -36,16 +38,18 @@ CREATE TABLE equipos_en_campeonato(
 
 -- 3. TABLAS PRINCIPALES
 CREATE TABLE jugador (
-    alias VARCHAR(200) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    alias VARCHAR(200),
     nacionalidad VARCHAR(200),
     posicion posicion,
     nombre_equipo VARCHAR(200),
-    imagen TEXT
+    imagen TEXT,
     FOREIGN KEY (nombre_equipo) REFERENCES equipo(nombre)
 );
 
 CREATE TABLE campeon (
-    nombre VARCHAR(200) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(200),
     posicion posicion,
     descripcion TEXT,
     imagen TEXT

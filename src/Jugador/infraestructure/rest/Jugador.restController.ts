@@ -82,4 +82,30 @@ router.delete(`/borrarJugador/:alias`, async (request: Request, response: Respon
         });
     }
 });
+
+
+router.patch(`/modificarJugador`, async (request: Request, response: Response) => {
+
+    try {
+
+        const { id, alias, posicion, imagen } = request.body;
+        const jugador: Jugador = {
+            id,
+            alias,
+            posicion,
+            imagen
+        }
+
+        const actualizarJugador = await jugadorUsesCases.modificarJugador(jugador);
+        response.status(200).json({
+            actualizarJugador
+        });
+
+    } catch (error) {
+        console.log("ERROR: ", error);
+        response.status(500).json({
+            message: "Error al actualizar jugador"
+        });
+    }
+});
 export default router

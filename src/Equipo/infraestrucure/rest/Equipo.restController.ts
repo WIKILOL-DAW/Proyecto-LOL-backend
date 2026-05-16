@@ -3,6 +3,7 @@ import EquipoRepository from "../../domain/Equipo.repository";
 import EquipoPostgresSQL from "../db/Equipo.repositoryPostgresSQL";
 import EquipoUsesCases from "../../application/Equipo.usesCases";
 import Equipo from "../../domain/Equipo";
+import { log } from "console";
 
 
 const equipoRepository: EquipoRepository = new EquipoPostgresSQL();
@@ -96,15 +97,21 @@ router.delete(`/borrarEquipo/:nombre`, async (request: Request, response: Respon
     }
 });
 
-router.put(`/actualizarNombreEquipo/:nombre`, async (request: Request, response: Response) => {
+router.patch(`/modificarEquipo`, async (request: Request, response: Response) => {
 
     try {
-        const { nombre } = request.params;
+
+        console.log(request.body);
+        
+        const {id, nombre, descripcion, imagen } = request.body;
         const equipo: Equipo = {
-            nombre
+            id,
+            nombre,
+            descripcion,
+            imagen
         }
 
-        const actualizarEquipo = await equipoUsesCases.cambiarNombreEquipo(equipo);
+        const actualizarEquipo = await equipoUsesCases.modificarEquipo(equipo);
         response.status(200).json({
             actualizarEquipo
         });

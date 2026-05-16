@@ -33,4 +33,21 @@ export default class JugadorPostgresSQL implements JugadorRepository {
         await executeQuery(borrado);
         return jugador;
     }
+
+    async modificarJugador(jugador: Jugador): Promise<Jugador> {
+
+        const update = `update jugador set alias = $1, posicion = $2, nombre_equipo = $3, imagen = $4 
+        where id = $5 RETURNING *`
+
+        const parametros = [
+            jugador.alias,
+            jugador.posicion,
+            jugador.nombreEquipo,
+            jugador.imagen,
+            jugador.id
+        ]
+
+        const resultado: any = await executeQuery(update, parametros);
+        return resultado;
+    }
 }
