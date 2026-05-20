@@ -1,0 +1,21 @@
+{
+  "name": "lolback",
+  "image": "291256530255.dkr.ecr.us-east-1.amazonaws.com/lolback@sha256:9a20b9b4544467b2d61375c3a3bfe686e70894a7cc8889992aa56a7ade9bb686",
+  "cpu": 0,
+  "portMappings": [
+    {
+      "containerPort": 80,
+      "hostPort": 80,
+      "protocol": "tcp",
+      "name": "lolback-80-tcp",
+      "appProtocol": "http"
+    }
+  ],
+  "essential": true,
+  "environment": [],
+  "environmentFiles": [],
+  "mountPoints": [],
+  "volumesFrom": [],
+  "ulimits": [],
+  "systemControls": []
+}
