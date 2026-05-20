@@ -21,7 +21,10 @@ router.post(`/nuevaPartida`, async (request: Request, response: Response) => {
             equipoGanador,
             killsEquipoAzul,
             killsEquipoRojo,
-            liga
+            torneo,
+            split,
+            año,
+            fase
         } = request.body;
 
         const partidaPost: Partida = {
@@ -32,7 +35,10 @@ router.post(`/nuevaPartida`, async (request: Request, response: Response) => {
             equipoGanador,
             killsEquipoAzul,
             killsEquipoRojo,
-            liga
+            torneo,
+            split,
+            año,
+            fase
         };
 
         const partida: Partida = await partidaUseCases.nuevaPartida(partidaPost);
@@ -62,7 +68,10 @@ router.put(`/actualizarPartida/:id`, async (request: Request, response: Response
             equipoGanador,
             killsEquipoAzul,
             killsEquipoRojo,
-            liga
+            torneo,
+            split,
+            año,
+            fase
         } = request.body;
 
         const partidaNueva: Partida = {
@@ -73,7 +82,10 @@ router.put(`/actualizarPartida/:id`, async (request: Request, response: Response
             equipoGanador,
             killsEquipoAzul,
             killsEquipoRojo,
-            liga
+            torneo,
+            split,
+            año,
+            fase
         };
 
         const partida: Partida = await partidaUseCases.actualizarPartida(id, partidaNueva);
@@ -87,6 +99,26 @@ router.put(`/actualizarPartida/:id`, async (request: Request, response: Response
 
         response.status(500).send({
             message: "Error al actualizar la partida"
+        });
+    }
+});
+
+router.get(`/obtenerPartidas`, async (request: Request, response: Response) => {
+
+    try {
+
+        const partidas: Partida[] = await partidaUseCases.obtenerPartidas();
+
+        response.status(200).send({
+            partidas
+        });
+
+    } catch (error) {
+
+        console.log("ERROR TRY: ", error);
+
+        response.status(500).send({
+            message: "Error al obtener las partidas"
         });
     }
 });

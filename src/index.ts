@@ -6,6 +6,8 @@ import routerAdministrador from "./Administrador/infrastructure/rest/Administrad
 import routerEquipo from './Equipo/infraestrucure/rest/Equipo.restController'
 import routerCampeon from './Campeon/infraestructure/rest/Campeon.restController'
 import routerJugador from './Jugador/infraestructure/rest/Jugador.restController'
+import routerNoticia from './Noticia/infraestructure/rest/Noticia.restController'
+import routerPartida from './Partida/infraestructure/rest/Partida.restController'
 
 dotenv.config();
 const port = process.env.PORT;
@@ -23,6 +25,8 @@ app.use(`/${api}admin`, routerAdministrador );
 app.use(`/${api}equipo` , routerEquipo);
 app.use(`/${api}campeon`, routerCampeon);
 app.use(`/${api}jugador` , routerJugador);
+app.use(`/${api}noticia` , routerNoticia);
+app.use(`/${api}partida` , routerPartida);
 
 app.listen(port, () => {
     console.log('app corriendo por el puerto: ' + port);

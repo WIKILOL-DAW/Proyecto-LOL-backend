@@ -22,4 +22,17 @@ export default class PartidaUseCases {
         
         return this.partidaRepository.actualizarPartida(idPartida, partidaNueva);
     }
+
+    async obtenerPartidas(): Promise<Partida[]> {
+
+    const partidas = await this.partidaRepository.obtenerPartidas();
+
+    if (!partidas || partidas.length === 0) {
+        throw new Error("No hay partidas registradas");
+    }
+
+    return partidas;
+}
+
+    
 }

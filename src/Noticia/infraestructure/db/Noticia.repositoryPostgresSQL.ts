@@ -5,7 +5,7 @@ import executeQuery from "../../../context/postgres.connector";
 export default class NoticiaRepositoryPostgres implements NoticiaRepository{
     async cargarNoticias(): Promise<Noticia[]> {
         //falta crear la tabla noticia en la bd
-        const query = `select * from Noticia`
+        const query = `select * from noticia`
         const resultado: any[] = await executeQuery(query);
         return resultado;
      

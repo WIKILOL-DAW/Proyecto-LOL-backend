@@ -1,6 +1,5 @@
 import Administrador from "../domain/Administrador";
 import AdministradorRepository from "../domain/Administrador.repository";
-import { error } from "console";
 import { hash } from "../../context/security/encrypter"
 import bcrypt from "bcrypt";
 
@@ -9,7 +8,10 @@ export default class AdministradorUseCases {
 
     async registro(administrador: Administrador): Promise<Administrador> {
         console.log(administrador);
-        if (!administrador.passwrd) throw new error("no passwrd")
+
+        if (!administrador.passwrd) {
+            throw new Error("no password");
+        }
 
         const pswCifrada = hash(administrador.passwrd);
         administrador.passwrd = pswCifrada;
@@ -17,20 +19,27 @@ export default class AdministradorUseCases {
         return this.administradorRepository.registro(administrador);
     }
 
-    async login(administrador: Administrador): Promise<Administrador | false > {
-        const administradorDB = await this.administradorRepository.login(administrador)
+    async login(administrador: Administrador): Promise<Administrador | false> {
+
+        const administradorDB = await this.administradorRepository.login(administrador);
+
+        if (
+            !administrador.passwrd ||
+            !administradorDB.passwrd
+        ) {
+            return false;
+        }
 
         const coincide = await bcrypt.compare(
-        administrador.passwrd.toString(),   
-        administradorDB.passwrd.toString()  
-    );
+            administrador.passwrd.toString(),
+            administradorDB.passwrd.toString()
+        );
 
-        if (!administrador.correo) {
+        if (!coincide) {
+            administradorDB.passwrd = undefined;
             return false;
-
-        }else if(!coincide){
-           administradorDB.passwrd  = null
         }
+
         return administradorDB;
     }
 }

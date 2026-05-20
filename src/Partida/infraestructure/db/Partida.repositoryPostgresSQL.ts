@@ -8,15 +8,18 @@ export default class PartidaPostgresSQL implements PartidaRepository {
 
         const insert = `
             INSERT INTO partida 
-            (fecha_partida, equipo_rojo, equipo_azul, equipo_ganador, kills_equipo_azul, kills_equipo_rojo, liga)
+            (fecha_partida, equipo_rojo, equipo_azul, equipo_ganador, kills_equipo_azul, kills_equipo_rojo, torneo, split, año, fase)
             VALUES (
                 '${partida.fechaPartida.toISOString()}',
                 '${partida.equipoRojo}',
                 '${partida.equipoAzul}',
                 '${partida.equipoGanador}',
-                ${partida.killsEquipoAzul},
-                ${partida.killsEquipoRojo},
-                '${partida.liga}'
+                '${partida.killsEquipoAzul}',
+                '${partida.killsEquipoRojo}',
+                '${partida.torneo}',
+                '${partida.split}',
+                '${partida.año}',
+                '${partida.fase}',
             );
         `;
 
@@ -30,7 +33,10 @@ export default class PartidaPostgresSQL implements PartidaRepository {
             equipoGanador: rows[0].equipo_ganador,
             killsEquipoAzul: rows[0].kills_equipo_azul,
             killsEquipoRojo: rows[0].kills_equipo_rojo,
-            liga: rows[0].liga
+            torneo: rows[0].torneo,
+            split: rows[0].split,
+            año: rows[0].año,
+            fase: rows[0].fase
         };
 
         return partidaDB;
@@ -46,7 +52,10 @@ export default class PartidaPostgresSQL implements PartidaRepository {
                 equipo_ganador = '${partidaNueva.equipoGanador}',
                 kills_equipo_azul = ${partidaNueva.killsEquipoAzul},
                 kills_equipo_rojo = ${partidaNueva.killsEquipoRojo},
-                liga = '${partidaNueva.liga}'
+                torneo = '${partidaNueva.torneo}'
+                split = '${partidaNueva.split}'
+                año = '${partidaNueva.año}'
+                fase = '${partidaNueva.fase}'
             WHERE id = ${idPartida};
         `;
 
@@ -60,9 +69,48 @@ export default class PartidaPostgresSQL implements PartidaRepository {
             equipoGanador: rows[0].equipo_ganador,
             killsEquipoAzul: rows[0].kills_equipo_azul,
             killsEquipoRojo: rows[0].kills_equipo_rojo,
-            liga: rows[0].liga
+            torneo: rows[0].torneo,
+            split: rows[0].split,
+            año: rows[0].año,
+            fase: rows[0].fase
         };
 
         return partidaDB;
     }
+    async obtenerPartidas(): Promise<Partida[]> {
+
+    const query = `
+        SELECT 
+            id,
+            fecha_partida,
+            equipo_rojo,
+            equipo_azul,
+            equipo_ganador,
+            kills_equipo_azul,
+            kills_equipo_rojo,
+            torneo,
+            split,
+            año,
+            fase
+        FROM partida;
+    `;
+
+    const rows: any[] = await executeQuery(query);
+
+    const partidas: Partida[] = rows.map((row) => ({
+        id: row.id,
+        fechaPartida: new Date(row.fecha_partida),
+        equipoRojo: row.equipo_rojo,
+        equipoAzul: row.equipo_azul,
+        equipoGanador: row.equipo_ganador,
+        killsEquipoAzul: row.kills_equipo_azul,
+        killsEquipoRojo: row.kills_equipo_rojo,
+        torneo: row.torneo,
+        split: row.split,
+        año: row.año,
+        fase: row.fase
+    }));
+
+    return partidas;
+}
 }

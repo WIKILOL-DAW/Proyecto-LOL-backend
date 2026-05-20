@@ -22,6 +22,7 @@ export default class CampeonPostgresSQL implements CampeonRepository {
 
         const select = `select * from campeon order by nombre asc`;
         const resultado: any[] = await executeQuery(select);
+        console.log(resultado)
         return resultado;
     }
 }

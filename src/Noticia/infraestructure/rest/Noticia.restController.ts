@@ -23,3 +23,4 @@ router.get(`/verNoticias`,async (request: Request,response:Response)=>{
         });
     }
 })
+export default router;

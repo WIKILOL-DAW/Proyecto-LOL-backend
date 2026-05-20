@@ -6,5 +6,8 @@ export default interface Partida {
     equipoGanador: string;
     killsEquipoAzul: number;
     killsEquipoRojo: number;
-    liga: string;
+    torneo: string;
+    split: string;
+    año: number;
+    fase: string
 }
