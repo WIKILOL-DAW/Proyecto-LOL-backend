@@ -3,7 +3,8 @@ import EquipoRepository from "../../domain/Equipo.repository";
 import EquipoPostgresSQL from "../db/Equipo.repositoryPostgresSQL";
 import EquipoUsesCases from "../../application/Equipo.usesCases";
 import Equipo from "../../domain/Equipo";
-import e from "express";
+import { log } from "console";
+
 
 const equipoRepository: EquipoRepository = new EquipoPostgresSQL();
 const equipoUsesCases: EquipoUsesCases = new EquipoUsesCases(
@@ -58,6 +59,22 @@ router.get(`/verEquipos/:liga`, async (request: Request, response: Response) => 
     }
 });
 
+router.get(`/verEquipos`, async (request: Request, response: Response) => {
+    try {
+
+        const verEquipos = await equipoUsesCases.verTodosLosEquipos();
+        response.status(200).json({
+            verEquipos
+        });
+
+    } catch (error) {
+        console.log("ERROR: ", error);
+        response.status(500).json({
+            message: "Error al ver los equipos"
+        });
+    }
+});
+
 router.delete(`/borrarEquipo/:nombre`, async (request: Request, response: Response) => {
 
     try {
@@ -80,15 +97,21 @@ router.delete(`/borrarEquipo/:nombre`, async (request: Request, response: Respon
     }
 });
 
-router.put(`/actualizarNombreEquipo/:nombre`, async (request: Request, response: Response) => {
+router.patch(`/modificarEquipo`, async (request: Request, response: Response) => {
 
     try {
-        const { nombre } = request.params;
+
+        console.log(request.body);
+        
+        const {id, nombre, descripcion, imagen } = request.body;
         const equipo: Equipo = {
-            nombre
+            id,
+            nombre,
+            descripcion,
+            imagen
         }
 
-        const actualizarEquipo = await equipoUsesCases.cambiarNombreEquipo(equipo);
+        const actualizarEquipo = await equipoUsesCases.modificarEquipo(equipo);
         response.status(200).json({
             actualizarEquipo
         });

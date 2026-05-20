@@ -12,4 +12,15 @@ export default class JugadorUsesCases {
         }
         return this.jugadorRepository.insertarJugador(jugador);
     }
+
+    async verJugadores(): Promise<Jugador[]> {
+        return this.jugadorRepository.verJugadores();
+    }
+    async borrarJugadorSegunNombre(jugador: Jugador): Promise<Jugador> {
+        return this.jugadorRepository.borrarJugadorSegunNombre(jugador);
+    }
+
+    async modificarJugador(jugador: Jugador): Promise<Jugador> {
+        return this.jugadorRepository.modificarJugador(jugador);
+    }
 }

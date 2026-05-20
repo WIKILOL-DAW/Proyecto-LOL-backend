@@ -17,7 +17,7 @@ router.post(`/insertarCampeon`, async (request: Request, response: Response) => 
 
     try {
 
-        const { nombre, posicion, descripcion , imagen} = request.body;
+        const { nombre, posicion, descripcion, imagen } = request.body;
 
         const campeonPost = {
             nombre,
@@ -54,6 +54,32 @@ router.get(`/verCampeones`, async (request: Request, response: Response) => {
         console.log("ERROR: ", error);
         response.status(500).json({
             message: "Error al mostrrar los campeones"
+        });
+    }
+});
+
+
+router.patch(`/modificarCampeon`, async (request: Request, response: Response) => {
+
+    try {
+
+        const { id, nombre, descripcion, imagen } = request.body;
+        const campeon: Campeon = {
+            id,
+            nombre,
+            descripcion,
+            imagen
+        }
+
+        const actualizarCampeon = await campeonUsesCases.modificarCampeon(campeon);
+        response.status(200).json({
+            actualizarCampeon
+        });
+
+    } catch (error) {
+        console.log("ERROR: ", error);
+        response.status(500).json({
+            message: "Error al actualizar campeon"
         });
     }
 });
