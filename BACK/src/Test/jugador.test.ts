@@ -2,7 +2,7 @@
 
 import request from 'supertest';
 import express from 'express';
-import router from '../';
+import router from '../Jugador/infraestructure/rest/Jugador.restController';
 
 const app = express();
 
