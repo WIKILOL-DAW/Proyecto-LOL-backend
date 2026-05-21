@@ -95,7 +95,6 @@ router.put(`/actualizarPartida/:id`, async (request: Request, response: Response
         });
 
     } catch (error) {
-        console.log("ERROR TRY: ", error);
 
         response.status(500).send({
             message: "Error al actualizar la partida"
@@ -114,8 +113,6 @@ router.get(`/obtenerPartidas`, async (request: Request, response: Response) => {
         });
 
     } catch (error) {
-
-        console.log("ERROR TRY: ", error);
 
         response.status(500).send({
             message: "Error al obtener las partidas"
