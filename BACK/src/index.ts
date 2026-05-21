@@ -31,3 +31,4 @@ app.use(`/${api}partida` , routerPartida);
 app.listen(port, () => {
     console.log('app corriendo por el puerto: ' + port);
 })
+export default app; 
