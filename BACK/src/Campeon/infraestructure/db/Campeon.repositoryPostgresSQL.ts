@@ -28,7 +28,7 @@ export default class CampeonPostgresSQL implements CampeonRepository {
     }
 
     async modificarCampeon(campeon: Campeon): Promise<Campeon> {
-        
+
         const update = `update campeon set nombre = $1, descripcion = $2, imagen = $3 where id = $4 RETURNING *`;
         const parametros = [
             campeon.nombre,
@@ -38,5 +38,11 @@ export default class CampeonPostgresSQL implements CampeonRepository {
         ]
         const resultado: any = await executeQuery(update, parametros);
         return resultado;
+    }
+
+    async borrarCampeonSegunNombre(campeon: Campeon): Promise<Campeon> {
+        const borrado = `delete from campeon where nombre = '${campeon.nombre}'`;
+        await executeQuery(borrado);
+        return campeon;
     }
 }

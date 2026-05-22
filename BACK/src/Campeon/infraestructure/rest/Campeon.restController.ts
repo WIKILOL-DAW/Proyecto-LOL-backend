@@ -84,4 +84,26 @@ router.patch(`/modificarCampeon`, async (request: Request, response: Response) =
     }
 });
 
+router.delete(`/borrarCampeon/:nombre`, async (request: Request, response: Response) => {
+
+    try {
+
+        const { nombre } = request.params;
+
+        const campeon: Campeon = {
+            nombre
+        }
+        const borrarCampeon = await campeonUsesCases.borrarCampeonSegunNombre(campeon);
+        response.status(200).json({
+            borrarCampeon
+        });
+
+    } catch (error) {
+        console.log("ERROR: ", error);
+        response.status(500).json({
+            message: "Error al borrar el Campeon"
+        });
+    }
+});
+
 export default router;
