@@ -20,4 +20,9 @@ export default class CampeonUsesCases {
     async modificarCampeon(campeon: Campeon): Promise<Campeon> {
         return this.campeonRepository.modificarCampeon(campeon);
     }
+    borrarCampeonSegunNombre(campeon: Campeon): Promise<Campeon> {
+        return this.campeonRepository.borrarCampeonSegunNombre(campeon);
+    }
+
+
 }

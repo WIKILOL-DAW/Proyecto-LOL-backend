@@ -1,4 +1,5 @@
 import { Posicion } from "../../Enum/Posicion";
+import Equipo from "../../Equipo/domain/Equipo";
 
 export default interface Jugador {
     id?: Number
@@ -6,6 +7,6 @@ export default interface Jugador {
     nacionalidad?: string,
     posicion?: Posicion,
     nombreEquipo? : string,
-    idEquipo?: Number,
+    idEquipo?: Equipo,
     imagen?: string
 }
