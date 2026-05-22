@@ -11,7 +11,7 @@ import routerPartida from './Partida/infraestructure/rest/Partida.restController
 
 dotenv.config();
 const port = process.env.PORT;
-const allowedOrigins = ["http://localhost:5173" , "http://localhost:8080" /*"http://192.168.11.238:8080"*/];
+const allowedOrigins = ["http://localhost:5173" , "http://localhost:8080" ,"http://lol-alb-2138982396.us-east-1.elb.amazonaws.com"];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
@@ -28,6 +28,4 @@ app.use(`/${api}jugador` , routerJugador);
 app.use(`/${api}noticia` , routerNoticia);
 app.use(`/${api}partida` , routerPartida);
 
-app.listen(port, () => {
-    console.log('app corriendo por el puerto: ' + port);
-})
+export default app; 

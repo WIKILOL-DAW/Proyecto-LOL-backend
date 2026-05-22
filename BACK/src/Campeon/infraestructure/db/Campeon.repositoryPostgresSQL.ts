@@ -15,6 +15,7 @@ export default class CampeonPostgresSQL implements CampeonRepository {
             descripcion: rows[0].descripcion,
             imagen: rows[0].imagen
         }
+
         return campeonDB;
     }
 
