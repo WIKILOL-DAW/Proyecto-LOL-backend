@@ -7,7 +7,6 @@ export default class NoticiaRepositoryPostgres implements NoticiaRepository{
         const query = `select * from noticia`
         const resultado: any[] = await executeQuery(query);
         return resultado;
-     
+    
     }
-
 }

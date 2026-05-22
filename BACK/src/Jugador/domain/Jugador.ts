@@ -6,5 +6,6 @@ export default interface Jugador {
     nacionalidad?: string,
     posicion?: Posicion,
     nombreEquipo? : string,
+    idEquipo?: Number,
     imagen?: string
 }
