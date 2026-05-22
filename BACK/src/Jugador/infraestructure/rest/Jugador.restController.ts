@@ -11,27 +11,21 @@ const jugadorUsesCases: JugadorUsesCases = new JugadorUsesCases(
 );
 
 const router = express.Router();
-
-
 router.post(`/insertarJugador`, async (request: Request, response: Response) => {
-
     try {
-
-        const { alias, nacionalidad, posicion, nombreEquipo, imagen } = request.body;
+        const { alias, nacionalidad, posicion, imagen, idEquipo } = request.body;
 
         const jugadorPost = {
             alias,
             nacionalidad,
             posicion,
-            nombreEquipo,
-            imagen
-        }
+            imagen,
+            idEquipo
+        };
 
         const jugador: Jugador = await jugadorUsesCases.insertarJugador(jugadorPost);
 
-        response.status(200).send({
-            jugador
-        });
+        response.status(200).send({ jugador });
 
     } catch (error) {
         console.log("ERROR: ", error);

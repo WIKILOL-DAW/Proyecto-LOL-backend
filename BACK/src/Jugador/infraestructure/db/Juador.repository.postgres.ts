@@ -3,23 +3,32 @@ import JugadorRepository from "../../domain/Jugador.repository";
 import executeQuery from "../../../context/postgres.connector";
 
 export default class JugadorPostgresSQL implements JugadorRepository {
+async insertarJugador(jugador: Jugador): Promise<Jugador> {
 
-    async insertarJugador(jugador: Jugador): Promise<Jugador> {
+    const insert = `
+        INSERT INTO jugador (alias, nacionalidad, posicion, id_equipo, imagen)
+        VALUES ('${jugador.alias}', '${jugador.nacionalidad}', '${jugador.posicion}', ${jugador.idEquipo}, '${jugador.imagen}')
+        RETURNING *;
+    `;
 
-        const insert = `insert into jugador (alias, nacionalidad, posicion, nombre_equipo) 
-         values ('${jugador.alias}' , '${jugador.nacionalidad}', '${jugador.posicion}', '${jugador.nombreEquipo}', '${jugador.imagen}') returning *`;
+    const rows: any[] = await executeQuery(insert);
 
-        const rows: any[] = await executeQuery(insert);
-
-        const jugadorDB = {
-            alias: rows[0].alias,
-            nacionalidad: rows[0].nacionalidad,
-            posicion: rows[0].posicion,
-            nombreEquipo: rows[0].nombrEquipo,
-            imagen: rows[0].imagen
-        }
-        return jugadorDB;
+    if (!rows || rows.length === 0) {
+        throw new Error("No se pudo insertar el jugador");
     }
+
+    const jugadorDB = {
+        id: rows[0].id,
+        alias: rows[0].alias,
+        nacionalidad: rows[0].nacionalidad,
+        posicion: rows[0].posicion,
+        idEquipo: rows[0].id_equipo,
+        imagen: rows[0].imagen
+    };
+
+    return jugadorDB;
+}
+
 
     async verJugadores(): Promise<Jugador[]> {
         const select = `select * from jugador`;
