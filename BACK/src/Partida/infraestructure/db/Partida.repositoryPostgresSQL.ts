@@ -19,8 +19,9 @@ export default class PartidaPostgresSQL implements PartidaRepository {
                 '${partida.torneo}',
                 '${partida.split}',
                 '${partida.año}',
-                '${partida.fase}',
-            );
+                '${partida.fase}'
+            )
+            RETURNING *;
         `;
 
         const rows: any[] = await executeQuery(insert);
@@ -52,11 +53,12 @@ export default class PartidaPostgresSQL implements PartidaRepository {
                 equipo_ganador = '${partidaNueva.equipoGanador}',
                 kills_equipo_azul = ${partidaNueva.killsEquipoAzul},
                 kills_equipo_rojo = ${partidaNueva.killsEquipoRojo},
-                torneo = '${partidaNueva.torneo}'
-                split = '${partidaNueva.split}'
-                año = '${partidaNueva.año}'
+                torneo = '${partidaNueva.torneo}',
+                split = '${partidaNueva.split}',
+                año = '${partidaNueva.año}',
                 fase = '${partidaNueva.fase}'
-            WHERE id = ${idPartida};
+            WHERE id = ${idPartida}
+            RETURNING *;
         `;
 
         const rows: any[] = await executeQuery(update);

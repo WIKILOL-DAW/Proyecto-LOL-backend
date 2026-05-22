@@ -1,67 +1,113 @@
+import request from "supertest";
+import { Posicion } from "../Enum/Posicion";
+import app from "../index";
+
+const jugadorPrueba = {
+    alias: "Razork",
+    nacionalidad: "Español",
+    posicion: Posicion[Posicion.JGL],
+    nombreEquipo: "Fnatic",
+    imagen: "razork.png"
+};
 
 
-import request from 'supertest';
-import express from 'express';
-import router from '../Jugador/infraestructure/rest/Jugador.restController';
+describe("POST /insertarJugador", () => {
 
-const app = express();
+    it("deberia insertar un jugador", async () => {
 
-app.use(express.json());
-app.use('/jugadores', router);
+        const response = await request(app)
+            .post("/api/jugador/insertarJugador")
+            .send(jugadorPrueba);
 
-describe('Endpoints de Jugadores', () => {
+        expect(response.status).toBe(200);
 
-    test('POST /insertarJugador -> debe insertar un jugador', async () => {
+        expect(response.body).toBeDefined();
 
-        const nuevoJugador = {
-            alias: 'Faker',
-            nacionalidad: 'Coreano',
-            posicion: 'Mid',
-            nombreEquipo: 'T1',
-            imagen: 'faker.png'
+        expect(response.body.jugador)
+            .toBeDefined();
+
+        expect(response.body.jugador.alias)
+            .toBe("Razork");
+    });
+
+});
+
+describe("GET /verJugadores", () => {
+
+    it("deberia devolver todos los jugadores", async () => {
+
+        const response = await request(app)
+            .get("/api/jugador/verJugadores");
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.jugadores)
+            .toBeDefined();
+
+        expect(Array.isArray(response.body.jugadores))
+            .toBe(true);
+    });
+
+});
+
+describe("PATCH /modificarJugador", () => {
+
+    it("deberia modificar un jugador", async () => {
+
+        const jugadorParaModificar = {
+            ...jugadorPrueba,
+            alias: "RazorkUpdate"
         };
 
-        const response = await request(app)
-            .post('/jugadores/insertarJugador')
-            .send(nuevoJugador);
+        const jugadorCreado = await request(app)
+            .post("/api/jugador/insertarJugador")
+            .send(jugadorParaModificar);
 
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('jugador');
-    });
+        expect(jugadorCreado.status).toBe(200);
 
-    test('GET /verJugadores -> debe devolver todos los jugadores', async () => {
-
-        const response = await request(app)
-            .get('/jugadores/verJugadores');
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('jugadores');
-    });
-
-    test('DELETE /borrarJugador/:alias -> debe borrar un jugador', async () => {
-
-        const response = await request(app)
-            .delete('/jugadores/borrarJugador/Faker');
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('borrarEquipo');
-    });
-
-    test('PATCH /modificarJugador -> debe modificar un jugador', async () => {
+        expect(jugadorCreado.body.jugador)
+            .toBeDefined();
 
         const jugadorActualizado = {
-            id: 1,
-            alias: 'Faker',
-            posicion: 'Top',
-            imagen: 'faker-new.png'
+            id: jugadorCreado.body.jugador.id,
+            alias: "RazorkUpdate",
+            posicion: Posicion[Posicion.TOP],
+            nombreEquipo: "Fnatic",
+            imagen: "razork-update.png"
         };
 
         const response = await request(app)
-            .patch('/jugadores/modificarJugador')
+            .patch("/api/jugador/modificarJugador")
             .send(jugadorActualizado);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('actualizarJugador');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.actualizarJugador)
+            .toBeDefined();
+
+        expect(response.body.actualizarJugador.posicion)
+            .toBe(Posicion[Posicion.TOP]);
+    });
+
+});
+
+describe("DELETE /borrarJugador/:alias", () => {
+
+    it("deberia borrar un jugador", async () => {
+
+        const response = await request(app)
+            .delete("/api/jugador/borrarJugador/Elyoya");
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.borrarEquipo)
+            .toBeDefined();
     });
 
 });
