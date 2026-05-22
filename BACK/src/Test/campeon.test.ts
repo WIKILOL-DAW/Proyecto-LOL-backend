@@ -1,56 +1,127 @@
+import request from "supertest";
 
-import request from 'supertest';
-import express from 'express';
-import router from '../Campeon/infraestructure/rest/Campeon.restController';
+import { Posicion } from "../Enum/Posicion";
+import app from "../index";
 
-const app = express();
+const identificador = Date.now();
 
-app.use(express.json());
-app.use('/campeones', router);
+const campeonPrueba = {
+    nombre: `Ahri${identificador}`,
+    posicion: Posicion[Posicion.MID],
+    descripcion: "Zorra de nueve colas",
+    imagen: "ahri.png"
+};
 
-describe('Endpoints de Campeones', () => {
+describe("POST /insertarCampeon", () => {
 
-    test('POST /insertarCampeon -> debe insertar un campeón', async () => {
+    it("deberia insertar un campeon", async () => {
 
-        const nuevoCampeon = {
-            nombre: 'Ahri',
-            posicion: 'Mid',
-            descripcion: 'Zorra de nueve colas',
-            imagen: 'ahri.png'
+        const response = await request(app)
+            .post("/api/campeon/insertarCampeon")
+            .send(campeonPrueba);
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.campeon)
+            .toBeDefined();
+
+        expect(response.body.campeon.nombre)
+            .toBe(campeonPrueba.nombre);
+    });
+
+});
+
+describe("GET /verCampeones", () => {
+
+    it("deberia devolver todos los campeones", async () => {
+
+        const response = await request(app)
+            .get("/api/campeon/verCampeones");
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.campeon)
+            .toBeDefined();
+
+        expect(Array.isArray(response.body.campeon))
+            .toBe(true);
+    });
+
+});
+
+describe("PATCH /modificarCampeon", () => {
+
+    it("deberia modificar un campeon", async () => {
+
+        const campeonParaModificar = {
+            ...campeonPrueba,
+            nombre: `Lux${identificador}`
         };
 
-        const response = await request(app)
-            .post('/campeones/insertarCampeon')
-            .send(nuevoCampeon);
+        const campeonCreado = await request(app)
+            .post("/api/campeon/insertarCampeon")
+            .send(campeonParaModificar);
 
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('campeon');
-    });
+        expect(campeonCreado.status).toBe(200);
 
-    test('GET /verCampeones -> debe devolver todos los campeones', async () => {
-
-        const response = await request(app)
-            .get('/campeones/verCampeones');
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('campeon');
-    });
-
-    test('PATCH /modificarCampeon -> debe modificar un campeón', async () => {
+        expect(campeonCreado.body.campeon)
+            .toBeDefined();
 
         const campeonActualizado = {
-            id: 1,
-            nombre: 'Lux',
-            descripcion: 'La dama luminosa actualizada',
-            imagen: 'lux.png'
+            id: campeonCreado.body.campeon.id,
+            nombre: `LuxUpdate${identificador}`,
+            descripcion: "La dama luminosa actualizada",
+            imagen: "lux.png"
         };
 
         const response = await request(app)
-            .patch('/campeones/modificarCampeon')
+            .patch("/api/campeon/modificarCampeon")
             .send(campeonActualizado);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('actualizarCampeon');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.actualizarCampeon)
+            .toBeDefined();
+
+        expect(response.body.actualizarCampeon.nombre)
+            .toBe(campeonActualizado.nombre);
+    });
+
+});
+
+describe("DELETE /borrarCampeon/:nombre", () => {
+
+    it("deberia borrar un campeon", async () => {
+
+        const campeonParaBorrar = {
+            ...campeonPrueba,
+            nombre: `Borrar${identificador}`
+        };
+
+        const campeonCreado = await request(app)
+            .post("/api/campeon/insertarCampeon")
+            .send(campeonParaBorrar);
+
+        expect(campeonCreado.status).toBe(200);
+
+        const response = await request(app)
+            .delete(`/api/campeon/borrarCampeon/${campeonParaBorrar.nombre}`);
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.borrarCampeon)
+            .toBeDefined();
+
+        expect(response.body.borrarCampeon.nombre)
+            .toBe(campeonParaBorrar.nombre);
     });
 
 });

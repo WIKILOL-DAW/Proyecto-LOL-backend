@@ -23,6 +23,10 @@ export default class AdministradorUseCases {
 
         const administradorDB = await this.administradorRepository.login(administrador);
 
+        if (!administradorDB) {
+            return false;
+        }
+
         if (
             !administrador.passwrd ||
             !administradorDB.passwrd

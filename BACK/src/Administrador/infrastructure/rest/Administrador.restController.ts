@@ -1,4 +1,4 @@
-import express, { request, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import AdministradorUseCases from "../../application/Administrador.useCases";
 import AdministradorRepository from "../../domain/Administrador.repository";
 import AdministradorPostgresSQL from "../db/Administrador.postgresSQL";
@@ -9,55 +9,72 @@ const administradorRepository: AdministradorRepository = new AdministradorPostgr
 
 const administradorUseCases: AdministradorUseCases = new AdministradorUseCases(
     administradorRepository
-)
+);
 
 const router = express.Router();
 
 router.post("/registro", async (request: Request, response: Response) => {
 
-    const { alias, correo, passwrd } = request.body;
+    try {
+        const { alias, correo, passwrd } = request.body;
 
-    const AdminPost = {
-        alias,
-        correo,
-        passwrd
+        const AdminPost = {
+            alias,
+            correo,
+            passwrd
+        };
+
+        const administrador: Administrador = await administradorUseCases.registro(AdminPost);
+        const token = createToken(administrador);
+
+        response.status(200).send({
+            message: "Registro correcto",
+            token
+        });
+    } catch (error) {
+        response.status(500).send({
+            message: "Error al registrar administrador",
+            token: null
+        });
     }
-    const administrador: Administrador = await administradorUseCases.registro(AdminPost);
-    const token = createToken(administrador);
-    response.status(200).send({
-        message: "Registro correcto",
-        token: token
-    })
-})
+});
 
 router.post("/login", async (request: Request, response: Response) => {
 
-    const { correo, passwrd } = request.body;
+    try {
+        const { correo, passwrd } = request.body;
 
-    const loginAdmin = {
-        correo,
-        passwrd
-    }
+        const loginAdmin = {
+            correo,
+            passwrd
+        };
 
-    const administrador: Administrador | false = await administradorUseCases.login(loginAdmin);
-    console.log(administrador, "Controller");
-    if (!administrador) {
-        response.status(400).send({
-            message: "Admin no encontrado",
+        const administrador: Administrador | false = await administradorUseCases.login(loginAdmin);
+
+        if (!administrador) {
+            response.status(400).send({
+                message: "Admin no encontrado",
+                token: null
+            });
+        } else if (administrador.passwrd === null) {
+            response.status(400).send({
+                message: "Contrasena incorrecta",
+                token: null
+            });
+        } else {
+            const token = createToken(administrador);
+
+            response.status(200).send({
+                message: "Credenciales correctas",
+                token
+            });
+        }
+    } catch (error) {
+        response.status(500).send({
+            message: "Error al iniciar sesion",
             token: null
-        })
-    } else if (administrador.passwrd === null) {
-        response.status(400).send({
-            message: "Contraseña incorrecte",
-            token: null
-        })
-    } else {
-        const token = createToken(administrador);
-        response.status(200).send({
-            message: "Credenciales correctas",
-            token: token
-        })
+        });
     }
-})
+});
 
 export default router;

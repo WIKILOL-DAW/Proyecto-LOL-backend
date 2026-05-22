@@ -1,62 +1,89 @@
-// administrador.test.ts
+import request from "supertest";
 
-import request from 'supertest';
-import express from 'express';
-import router from '../Administrador/infrastructure/rest/Administrador.restController';
+import app from "../index";
 
-const app = express();
+const identificador = Date.now();
 
-app.use(express.json());
-app.use('/admin', router);
+const administradorPrueba = {
+    alias: `admin${identificador}`,
+    correo: `admin${identificador}@test.com`,
+    passwrd: "123456"
+};
 
-describe('Endpoints de Administrador', () => {
+describe("POST /registro", () => {
 
-    test('POST /registro -> debe registrar un administrador', async () => {
-
-        const nuevoAdmin = {
-            alias: 'admin1',
-            correo: 'admin@test.com',
-            passwrd: '123456'
-        };
+    it("deberia registrar un administrador", async () => {
 
         const response = await request(app)
-            .post('/admin/registro')
-            .send(nuevoAdmin);
+            .post("/api/admin/registro")
+            .send(administradorPrueba);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('message');
-        expect(response.body).toHaveProperty('token');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.message)
+            .toBeDefined();
+
+        expect(response.body.token)
+            .toBeDefined();
     });
 
-    test('POST /login -> debe iniciar sesión correctamente', async () => {
+});
+
+describe("POST /login", () => {
+
+    it("deberia iniciar sesion correctamente", async () => {
+
+        const administradorLogin = {
+            alias: `login${identificador}`,
+            correo: `login${identificador}@test.com`,
+            passwrd: administradorPrueba.passwrd
+        };
+
+        const registro = await request(app)
+            .post("/api/admin/registro")
+            .send(administradorLogin);
+
+        expect(registro.status).toBe(200);
 
         const loginAdmin = {
-            correo: 'admin@test.com',
-            passwrd: '123456'
+            correo: administradorLogin.correo,
+            passwrd: administradorLogin.passwrd
         };
 
         const response = await request(app)
-            .post('/admin/login')
+            .post("/api/admin/login")
             .send(loginAdmin);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('message');
-        expect(response.body).toHaveProperty('token');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.message)
+            .toBeDefined();
+
+        expect(response.body.token)
+            .toBeDefined();
     });
 
-    test('POST /login -> debe devolver error si el admin no existe', async () => {
+    it("deberia devolver error si el administrador no existe", async () => {
 
         const loginIncorrecto = {
-            correo: 'noexiste@test.com',
-            passwrd: '123456'
+            correo: "noexiste@test.com",
+            passwrd: administradorPrueba.passwrd
         };
 
         const response = await request(app)
-            .post('/admin/login')
+            .post("/api/admin/login")
             .send(loginIncorrecto);
 
         expect(response.status).toBe(400);
-        expect(response.body.message).toBe('Admin no encontrado');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.message)
+            .toBe("Admin no encontrado");
     });
 
 });

@@ -10,6 +10,7 @@ export default class CampeonPostgresSQL implements CampeonRepository {
         const rows: any[] = await executeQuery(insert);
 
         const campeonDB = {
+            id: rows[0].id,
             nombre: rows[0].nombre,
             posicion: rows[0].posicion,
             descripcion: rows[0].descripcion,
@@ -36,13 +37,33 @@ export default class CampeonPostgresSQL implements CampeonRepository {
             campeon.imagen,
             campeon.id
         ]
-        const resultado: any = await executeQuery(update, parametros);
-        return resultado;
+        const rows: any[] = await executeQuery(update, parametros);
+
+        const campeonDB = {
+            id: rows[0].id,
+            nombre: rows[0].nombre,
+            posicion: rows[0].posicion,
+            descripcion: rows[0].descripcion,
+            imagen: rows[0].imagen
+        }
+
+        return campeonDB;
     }
 
     async borrarCampeonSegunNombre(campeon: Campeon): Promise<Campeon> {
-        const borrado = `delete from campeon where nombre = '${campeon.nombre}'`;
-        await executeQuery(borrado);
-        return campeon;
+        const borrado = `delete from campeon where nombre = $1 returning *`;
+        const rows: any[] = await executeQuery(borrado, [campeon.nombre]);
+
+        if (rows.length === 0) {
+            return campeon;
+        }
+
+        return {
+            id: rows[0].id,
+            nombre: rows[0].nombre,
+            posicion: rows[0].posicion,
+            descripcion: rows[0].descripcion,
+            imagen: rows[0].imagen
+        };
     }
 }

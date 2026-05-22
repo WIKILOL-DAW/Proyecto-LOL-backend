@@ -1,74 +1,146 @@
+import request from "supertest";
 
-import request from 'supertest';
-import express from 'express';
-import router from '../Equipo/infraestrucure/rest/Equipo.restController';
+import app from "../index";
 
-const app = express();
+const identificador = Date.now();
 
-app.use(express.json());
-app.use('/equipos', router);
+const equipoPrueba = {
+    nombre: `G2${identificador}`,
+    nombreLiga: "LEC",
+    descripcion: "Equipo europeo",
+    imagen: "g2.png"
+};
 
-describe('Endpoints de Equipos', () => {
+describe("POST /insertarEquipo", () => {
 
-    test('POST /insertarEquipo -> debe insertar un equipo', async () => {
+    it("deberia insertar un equipo", async () => {
 
-        const nuevoEquipo = {
-            nombre: 'Real Madrid',
-            nombreLiga: 'LaLiga',
-            descripcion: 'Equipo español',
-            imagen: 'realmadrid.png'
+        const response = await request(app)
+            .post("/api/equipo/insertarEquipo")
+            .send(equipoPrueba);
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.equipo)
+            .toBeDefined();
+
+        expect(response.body.equipo.nombre)
+            .toBe(equipoPrueba.nombre);
+    });
+
+});
+
+describe("GET /verEquipos/:liga", () => {
+
+    it("deberia devolver equipos por liga", async () => {
+
+        const response = await request(app)
+            .get(`/api/equipo/verEquipos/${equipoPrueba.nombreLiga}`);
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.verEquipos)
+            .toBeDefined();
+
+        expect(Array.isArray(response.body.verEquipos))
+            .toBe(true);
+    });
+
+});
+
+describe("GET /verEquipos", () => {
+
+    it("deberia devolver todos los equipos", async () => {
+
+        const response = await request(app)
+            .get("/api/equipo/verEquipos");
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.verEquipos)
+            .toBeDefined();
+
+        expect(Array.isArray(response.body.verEquipos))
+            .toBe(true);
+    });
+
+});
+
+describe("PATCH /modificarEquipo", () => {
+
+    it("deberia modificar un equipo", async () => {
+
+        const equipoParaModificar = {
+            ...equipoPrueba,
+            nombre: `FNC${identificador}`
         };
 
-        const response = await request(app)
-            .post('/equipos/insertarEquipo')
-            .send(nuevoEquipo);
+        const equipoCreado = await request(app)
+            .post("/api/equipo/insertarEquipo")
+            .send(equipoParaModificar);
 
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('equipo');
-    });
+        expect(equipoCreado.status).toBe(200);
 
-    test('GET /verEquipos/:liga -> debe devolver equipos por liga', async () => {
-
-        const response = await request(app)
-            .get('/equipos/verEquipos/LaLiga');
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('verEquipos');
-    });
-
-    test('GET /verEquipos -> debe devolver todos los equipos', async () => {
-
-        const response = await request(app)
-            .get('/equipos/verEquipos');
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('verEquipos');
-    });
-
-    test('DELETE /borrarEquipo/:nombre -> debe borrar un equipo', async () => {
-
-        const response = await request(app)
-            .delete('/equipos/borrarEquipo/Real Madrid');
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('borrarEquipo');
-    });
-
-    test('PATCH /modificarEquipo -> debe modificar un equipo', async () => {
+        expect(equipoCreado.body.equipo)
+            .toBeDefined();
 
         const equipoActualizado = {
-            id: 1,
-            nombre: 'Barcelona',
-            descripcion: 'Equipo actualizado',
-            imagen: 'barcelona.png'
+            id: equipoCreado.body.equipo.id,
+            nombre: `FNCUpdate${identificador}`,
+            descripcion: "Equipo actualizado",
+            imagen: "fnatic.png"
         };
 
         const response = await request(app)
-            .patch('/equipos/modificarEquipo')
+            .patch("/api/equipo/modificarEquipo")
             .send(equipoActualizado);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('actualizarEquipo');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.actualizarEquipo)
+            .toBeDefined();
+
+        expect(response.body.actualizarEquipo.nombre)
+            .toBe(equipoActualizado.nombre);
+    });
+
+});
+
+describe("DELETE /borrarEquipo/:nombre", () => {
+
+    it("deberia borrar un equipo", async () => {
+
+        const equipoParaBorrar = {
+            ...equipoPrueba,
+            nombre: `Borrar${identificador}`
+        };
+
+        const equipoCreado = await request(app)
+            .post("/api/equipo/insertarEquipo")
+            .send(equipoParaBorrar);
+
+        expect(equipoCreado.status).toBe(200);
+
+        const response = await request(app)
+            .delete(`/api/equipo/borrarEquipo/${equipoParaBorrar.nombre}`);
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.borrarEquipo)
+            .toBeDefined();
+
+        expect(response.body.borrarEquipo.nombre)
+            .toBe(equipoParaBorrar.nombre);
     });
 
 });

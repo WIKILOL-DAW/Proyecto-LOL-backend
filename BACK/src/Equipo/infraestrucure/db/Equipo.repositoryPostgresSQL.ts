@@ -11,8 +11,9 @@ export default class EquipoPostgresSQL implements EquipoRepository {
         const rows: any[] = await executeQuery(insert);
 
         const equipoDB = {
+            id: rows[0].id,
             nombre: rows[0].nombre,
-            nombreLiga: rows[0].nombreLiga,
+            nombreLiga: rows[0].nombre_liga,
             descripcion: rows[0].descripcion,
             imagen: rows[0].imagen
         }
@@ -26,9 +27,20 @@ export default class EquipoPostgresSQL implements EquipoRepository {
     }
 
     async borrarEquipoSegunNombre(equipo: Equipo): Promise<Equipo> {
-        const borrar = `delete from equipo where nombre = '${equipo.nombre}'`;
-        await executeQuery(borrar);
-        return equipo;
+        const borrar = `delete from equipo where nombre = $1 returning *`;
+        const rows: any[] = await executeQuery(borrar, [equipo.nombre]);
+
+        if (rows.length === 0) {
+            return equipo;
+        }
+
+        return {
+            id: rows[0].id,
+            nombre: rows[0].nombre,
+            nombreLiga: rows[0].nombre_liga,
+            descripcion: rows[0].descripcion,
+            imagen: rows[0].imagen
+        };
     }
 
     async verTodosLosEquipos(): Promise<Equipo[]> {
@@ -48,7 +60,14 @@ export default class EquipoPostgresSQL implements EquipoRepository {
             equipo.id
         ];
 
-        const resultado: any = await executeQuery(update, parametros);
-        return resultado
+        const rows: any[] = await executeQuery(update, parametros);
+
+        return {
+            id: rows[0].id,
+            nombre: rows[0].nombre,
+            nombreLiga: rows[0].nombre_liga,
+            descripcion: rows[0].descripcion,
+            imagen: rows[0].imagen
+        };
     }
 }
