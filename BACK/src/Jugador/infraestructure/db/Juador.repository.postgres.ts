@@ -11,28 +11,10 @@ async insertarJugador(jugador: Jugador): Promise<Jugador> {
         RETURNING *;
     `;
 
-        const insert = `insert into jugador (alias, nacionalidad, posicion, nombre_equipo, imagen)
-         values ($1, $2, $3, $4, $5) returning *`;
+    const rows: any[] = await executeQuery(insert);
 
-        const parametros = [
-            jugador.alias,
-            jugador.nacionalidad,
-            jugador.posicion,
-            jugador.nombreEquipo,
-            jugador.imagen
-        ];
-
-        const rows: any[] = await executeQuery(insert, parametros);
-
-        const jugadorDB = {
-            id: rows[0].id,
-            alias: rows[0].alias,
-            nacionalidad: rows[0].nacionalidad,
-            posicion: rows[0].posicion,
-            nombreEquipo: rows[0].nombre_equipo,
-            imagen: rows[0].imagen
-        }
-        return jugadorDB;
+    if (!rows || rows.length === 0) {
+        throw new Error("No se pudo insertar el jugador");
     }
 
     const jugadorDB = {
