@@ -88,11 +88,12 @@ router.patch(`/modificarJugador`, async (request: Request, response: Response) =
 
     try {
 
-        const { id, alias, posicion, imagen } = request.body;
+        const { id, alias, posicion, nombreEquipo, imagen } = request.body;
         const jugador: Jugador = {
             id,
             alias,
             posicion,
+            nombreEquipo,
             imagen
         }
 

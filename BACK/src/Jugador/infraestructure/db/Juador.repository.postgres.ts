@@ -6,16 +6,25 @@ export default class JugadorPostgresSQL implements JugadorRepository {
 
     async insertarJugador(jugador: Jugador): Promise<Jugador> {
 
-        const insert = `insert into jugador (alias, nacionalidad, posicion, nombre_equipo) 
-         values ('${jugador.alias}' , '${jugador.nacionalidad}', '${jugador.posicion}', '${jugador.nombreEquipo}', '${jugador.imagen}') returning *`;
+        const insert = `insert into jugador (alias, nacionalidad, posicion, nombre_equipo, imagen)
+         values ($1, $2, $3, $4, $5) returning *`;
 
-        const rows: any[] = await executeQuery(insert);
+        const parametros = [
+            jugador.alias,
+            jugador.nacionalidad,
+            jugador.posicion,
+            jugador.nombreEquipo,
+            jugador.imagen
+        ];
+
+        const rows: any[] = await executeQuery(insert, parametros);
 
         const jugadorDB = {
+            id: rows[0].id,
             alias: rows[0].alias,
             nacionalidad: rows[0].nacionalidad,
             posicion: rows[0].posicion,
-            nombreEquipo: rows[0].nombrEquipo,
+            nombreEquipo: rows[0].nombre_equipo,
             imagen: rows[0].imagen
         }
         return jugadorDB;
@@ -29,9 +38,21 @@ export default class JugadorPostgresSQL implements JugadorRepository {
 
     async borrarJugadorSegunNombre(jugador: Jugador): Promise<Jugador> {
 
-        const borrado = `delete from jugador where alias = '${jugador.alias}'`;
-        await executeQuery(borrado);
-        return jugador;
+        const borrado = `delete from jugador where alias = $1 returning *`;
+        const rows: any[] = await executeQuery(borrado, [jugador.alias]);
+
+        if (rows.length === 0) {
+            return jugador;
+        }
+
+        return {
+            id: rows[0].id,
+            alias: rows[0].alias,
+            nacionalidad: rows[0].nacionalidad,
+            posicion: rows[0].posicion,
+            nombreEquipo: rows[0].nombre_equipo,
+            imagen: rows[0].imagen
+        };
     }
 
     async modificarJugador(jugador: Jugador): Promise<Jugador> {
@@ -47,7 +68,15 @@ export default class JugadorPostgresSQL implements JugadorRepository {
             jugador.id
         ]
 
-        const resultado: any = await executeQuery(update, parametros);
-        return resultado;
+        const rows: any[] = await executeQuery(update, parametros);
+
+        return {
+            id: rows[0].id,
+            alias: rows[0].alias,
+            nacionalidad: rows[0].nacionalidad,
+            posicion: rows[0].posicion,
+            nombreEquipo: rows[0].nombre_equipo,
+            imagen: rows[0].imagen
+        };
     }
 }

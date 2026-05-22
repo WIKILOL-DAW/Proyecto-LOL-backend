@@ -8,9 +8,10 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "resolveJsonModule": true,
+        "types": ["node", "jest"]
     },
     "include": [
-        "*.ts", "src/index.ts"
+        "src/**/*.ts"
     ],
     "exclude": [
         "node_modules"

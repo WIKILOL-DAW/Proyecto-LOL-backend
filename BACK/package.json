@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "test": "jest --runInBand",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/server.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

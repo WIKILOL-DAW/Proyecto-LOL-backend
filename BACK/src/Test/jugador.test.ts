@@ -1,67 +1,95 @@
+import request from "supertest";
+
+import app from "../index";
+
+const jugadorPrueba = {
+    alias: "Elyoya",
+    nacionalidad: "Español",
+    posicion: "JGL",
+    nombreEquipo: "Movistar KOI",
+    imagen: "elyoya.png"
+};
 
 
-import request from 'supertest';
-import express from 'express';
-import router from '../Jugador/infraestructure/rest/Jugador.restController';
+describe("POST /insertarJugador", () => {
 
-const app = express();
-
-app.use(express.json());
-app.use('/jugadores', router);
-
-describe('Endpoints de Jugadores', () => {
-
-    test('POST /insertarJugador -> debe insertar un jugador', async () => {
-
-        const nuevoJugador = {
-            alias: 'Faker',
-            nacionalidad: 'Coreano',
-            posicion: 'Mid',
-            nombreEquipo: 'T1',
-            imagen: 'faker.png'
-        };
+    it("deberia insertar un jugador", async () => {
 
         const response = await request(app)
-            .post('/jugadores/insertarJugador')
-            .send(nuevoJugador);
+            .post("/api/jugador/insertarJugador")
+            .send(jugadorPrueba);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('jugador');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.jugador)
+            .toBeDefined();
+
+        expect(response.body.jugador.alias)
+            .toBe("Elyoya");
     });
 
-    test('GET /verJugadores -> debe devolver todos los jugadores', async () => {
+});
+
+describe("GET /verJugadores", () => {
+
+    it("deberia devolver todos los jugadores", async () => {
 
         const response = await request(app)
-            .get('/jugadores/verJugadores');
+            .get("/api/jugador/verJugadores");
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('jugadores');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.jugadores)
+            .toBeDefined();
+
+        expect(Array.isArray(response.body.jugadores))
+            .toBe(true);
     });
 
-    test('DELETE /borrarJugador/:alias -> debe borrar un jugador', async () => {
+});
 
-        const response = await request(app)
-            .delete('/jugadores/borrarJugador/Faker');
+describe("PATCH /modificarJugador", () => {
 
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('borrarEquipo');
-    });
-
-    test('PATCH /modificarJugador -> debe modificar un jugador', async () => {
+    it("deberia modificar un jugador", async () => {
 
         const jugadorActualizado = {
             id: 1,
-            alias: 'Faker',
-            posicion: 'Top',
-            imagen: 'faker-new.png'
+            alias: "Elyoya",
+            posicion: "Top",
+            imagen: "Elyoya.png"
         };
 
         const response = await request(app)
-            .patch('/jugadores/modificarJugador')
+            .patch("/api/jugador/modificarJugador")
             .send(jugadorActualizado);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('actualizarJugador');
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.actualizarJugador)
+            .toBeDefined();
+    });
+
+});
+
+describe("DELETE /borrarJugador/:alias", () => {
+
+    it("deberia borrar un jugador", async () => {
+
+        const response = await request(app)
+            .delete("/api/jugador/borrarJugador/Elyoya");
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toBeDefined();
+
+        expect(response.body.borrarEquipo)
+            .toBeDefined();
     });
 
 });
