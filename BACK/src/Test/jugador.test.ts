@@ -1,13 +1,13 @@
 import request from "supertest";
-
+import { Posicion } from "../Enum/Posicion";
 import app from "../index";
 
 const jugadorPrueba = {
-    alias: "Elyoya",
+    alias: "Razork",
     nacionalidad: "Español",
-    posicion: "JGL",
-    nombreEquipo: "Movistar KOI",
-    imagen: "elyoya.png"
+    posicion: Posicion[Posicion.JGL],
+    nombreEquipo: "Fnatic",
+    imagen: "razork.png"
 };
 
 
@@ -27,7 +27,7 @@ describe("POST /insertarJugador", () => {
             .toBeDefined();
 
         expect(response.body.jugador.alias)
-            .toBe("Elyoya");
+            .toBe("Razork");
     });
 
 });
@@ -56,11 +56,26 @@ describe("PATCH /modificarJugador", () => {
 
     it("deberia modificar un jugador", async () => {
 
+        const jugadorParaModificar = {
+            ...jugadorPrueba,
+            alias: "RazorkUpdate"
+        };
+
+        const jugadorCreado = await request(app)
+            .post("/api/jugador/insertarJugador")
+            .send(jugadorParaModificar);
+
+        expect(jugadorCreado.status).toBe(200);
+
+        expect(jugadorCreado.body.jugador)
+            .toBeDefined();
+
         const jugadorActualizado = {
-            id: 1,
-            alias: "Elyoya",
-            posicion: "Top",
-            imagen: "Elyoya.png"
+            id: jugadorCreado.body.jugador.id,
+            alias: "RazorkUpdate",
+            posicion: Posicion[Posicion.TOP],
+            nombreEquipo: "Fnatic",
+            imagen: "razork-update.png"
         };
 
         const response = await request(app)
@@ -73,6 +88,9 @@ describe("PATCH /modificarJugador", () => {
 
         expect(response.body.actualizarJugador)
             .toBeDefined();
+
+        expect(response.body.actualizarJugador.posicion)
+            .toBe(Posicion[Posicion.TOP]);
     });
 
 });

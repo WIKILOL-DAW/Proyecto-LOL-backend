@@ -96,8 +96,9 @@ export default class PartidaPostgresSQL implements PartidaRepository {
             fase
         FROM partida;
     `;
-
+         console.log("ea")
     const rows: any[] = await executeQuery(query);
+     console.log(rows)
 
     const partidas: Partida[] = rows.map((row) => ({
         id: row.id,

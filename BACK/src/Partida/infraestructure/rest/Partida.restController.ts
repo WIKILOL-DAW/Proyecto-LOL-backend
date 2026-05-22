@@ -113,7 +113,7 @@ router.get(`/obtenerPartidas`, async (request: Request, response: Response) => {
         });
 
     } catch (error) {
-
+            console.log("error")
         response.status(500).send({
             message: "Error al obtener las partidas"
         });
