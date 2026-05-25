@@ -11,7 +11,7 @@ import routerPartida from './Partida/infraestructure/rest/Partida.restController
 
 dotenv.config();
 const port = process.env.PORT;
-const allowedOrigins = ["http://localhost:5173" , "http://localhost:8080" ,"http://lol-alb-2138982396.us-east-1.elb.amazonaws.com"];
+const allowedOrigins = ["http://localhost:5173" , "http://localhost:8080" ,"http://lol-alb-2138982396.us-east-1.elb.amazonaws.com:80"];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
