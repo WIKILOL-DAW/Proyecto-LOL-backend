@@ -2,11 +2,11 @@ FROM node:18
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY BACK/package*.json ./
 RUN npm install
 
-COPY tsconfig.json ./
-COPY . .
+COPY BACK/tsconfig.json ./
+COPY BACK ./
 
 RUN npm run build
 
