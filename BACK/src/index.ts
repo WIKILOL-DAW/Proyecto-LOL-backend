@@ -20,6 +20,10 @@ const app = express();
 app.use(express.json());
 app.use(cors(options));
 
+app.get("/health", (req, res) => {
+  res.status(200).send("ok");
+});
+
 const api = "api/";
 app.use(`/${api}admin`, routerAdministrador );
 app.use(`/${api}equipo` , routerEquipo);
