@@ -1,22 +1,14 @@
-# Build stage
-FROM node:18 AS build
+FROM node:18
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY BACK/package*.json ./
 RUN npm install --legacy-peer-deps
 
-COPY . .
+COPY BACK ./
 
 RUN npm run build
 
+EXPOSE 3000
 
-
-# Serve stage (ligero)
-FROM nginx:alpine
-
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "dist/server.js"]
