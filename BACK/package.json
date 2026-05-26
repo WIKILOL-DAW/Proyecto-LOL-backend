@@ -2,8 +2,9 @@
   "name": "proyecto-lol-backend",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest --runInBand",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "build": "tsc",
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
