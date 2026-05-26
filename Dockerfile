@@ -2,11 +2,12 @@ FROM node:18
 
 WORKDIR /app
 
-COPY BACK/package*.json ./
-RUN npm install
+COPY package*.json ./
 
-COPY BACK/tsconfig.json ./
-COPY BACK ./
+# IMPORTANTE: instalar TODAS las dependencias (incluye devDependencies)
+RUN npm ci
+
+COPY . .
 
 RUN npm run build
 
