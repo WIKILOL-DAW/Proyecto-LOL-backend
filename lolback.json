@@ -1,71 +1,66 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:291256530255:task-definition/lolback:1",
-    "containerDefinitions": [
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:291256530255:task-definition/lolback:11",
+  "containerDefinitions": [
+    {
+      "name": "lolback",
+      "image": "291256530255.dkr.ecr.us-east-1.amazonaws.com/lolback:8bddc435c8ae56da4a467ca6f4aa4149708c3bd7",
+      "cpu": 0,
+      "portMappings": [
         {
-            "name": "lolback",
-            "image": "291256530255.dkr.ecr.us-east-1.amazonaws.com/lolback@sha256:9a20b9b4544467b2d61375c3a3bfe686e70894a7cc8889992aa56a7ade9bb686",
-            "cpu": 0,
-            "portMappings": [
-                {
-                    "containerPort": 80,
-                    "hostPort": 80,
-                    "protocol": "tcp",
-                    "name": "lolback-80-tcp",
-                    "appProtocol": "http"
-                }
-            ],
-            "essential": true,
-            "environment": [],
-            "environmentFiles": [],
-            "mountPoints": [],
-            "volumesFrom": [],
-            "ulimits": [],
-            "systemControls": []
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "name": "lolback-80-tcp",
+          "appProtocol": "http"
         }
-    ],
-    "family": "lolback",
-    "taskRoleArn": "arn:aws:iam::291256530255:role/LabRole",
-    "executionRoleArn": "arn:aws:iam::291256530255:role/LabRole",
-    "networkMode": "awsvpc",
-    "revision": 1,
-    "volumes": [],
-    "status": "ACTIVE",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "ecs.capability.execution-role-ecr-pull"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
-            "name": "ecs.capability.task-eni"
-        }
-    ],
-    "placementConstraints": [],
-    "compatibilities": [
-        "EC2",
-        "MANAGED_INSTANCES",
-        "FARGATE"
-    ],
-    "runtimePlatform": {
-        "cpuArchitecture": "X86_64",
-        "operatingSystemFamily": "LINUX"
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "systemControls": []
+    }
+  ],
+  "family": "lolback",
+  "taskRoleArn": "arn:aws:iam::291256530255:role/LabRole",
+  "executionRoleArn": "arn:aws:iam::291256530255:role/LabRole",
+  "networkMode": "awsvpc",
+  "revision": 11,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
     },
-    "requiresCompatibilities": [
-        "FARGATE"
-    ],
-    "cpu": "1024",
-    "memory": "3072",
-    "registeredAt": "2026-05-20T08:46:41.224Z",
-    "registeredBy": "arn:aws:sts::291256530255:assumed-role/voclabs/user2862610=Adri__n_Rami_Irurueta",
-    "tags": []
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE",
+    "MANAGED_INSTANCES"
+  ],
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "3072",
+  "registeredAt": "2026-05-25T14:41:00.838Z",
+  "registeredBy": "arn:aws:sts::291256530255:assumed-role/voclabs/user2862610=Adri__n_Rami_Irurueta",
+  "tags": []
 }
