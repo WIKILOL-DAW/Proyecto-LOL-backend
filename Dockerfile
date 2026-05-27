@@ -1,14 +1,16 @@
-FROM node:18
+FROM node:20-alpine
 
 WORKDIR /app
 
-COPY BACK/package*.json ./
-RUN npm install --legacy-peer-deps
+COPY package*.json ./
+COPY tsconfig.json ./
 
-COPY BACK ./
+RUN npm install
+
+COPY . .
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["node", "dist/server.js"]
