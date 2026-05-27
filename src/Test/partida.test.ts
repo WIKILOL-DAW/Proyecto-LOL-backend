@@ -16,50 +16,34 @@ const partidaPrueba = {
 };
 
 describe("GET /obtenerPartidas", () => {
-
     it("deberia devolver todas las partidas", async () => {
-
         const response = await request(app)
             .get("/api/partida/obtenerPartidas");
-
         expect(response.status).toBe(200);
-
         expect(response.body).toBeDefined();
-
         expect(response.body.partidas)
             .toBeDefined();
-
         expect(Array.isArray(response.body.partidas))
             .toBe(true);
     });
-
 });
 
 describe("POST /nuevaPartida", () => {
-
     it("deberia crear una nueva partida", async () => {
-
         const response = await request(app)
             .post("/api/partida/nuevaPartida")
             .send(partidaPrueba);
-
         expect(response.status).toBe(200);
-
         expect(response.body).toBeDefined();
-
         expect(response.body.partida)
             .toBeDefined();
-
         expect(response.body.partida.equipoRojo)
             .toBe("G2 Esports");
     });
-
 });
 
 describe("PUT /actualizarPartida/:id", () => {
-
     it("deberia actualizar una partida", async () => {
-
         const partidaActualizada = {
             ...partidaPrueba,
             equipoRojo: "G2 Esports",
@@ -68,20 +52,14 @@ describe("PUT /actualizarPartida/:id", () => {
             killsEquipoAzul: 20,
             killsEquipoRojo: 12
         };
-
         const response = await request(app)
             .put("/api/partida/actualizarPartida/1")
             .send(partidaActualizada);
-
         expect(response.status).toBe(200);
-
         expect(response.body).toBeDefined();
-
         expect(response.body.partida)
             .toBeDefined();
-
         expect(response.body.partida.equipoAzul)
             .toBe("Movistar KOI");
     });
-
 });

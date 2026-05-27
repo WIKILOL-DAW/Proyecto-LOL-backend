@@ -1,15 +1,10 @@
--- Rol
-CREATE TYPE posicion AS ENUM ('TOP','JGL','MID','ADC','SUP');
--- Split
-CREATE TYPE split AS ENUM ('WINTER','SPRING','SUMMER');
--- Posicion en lo PlayOffs
-CREATE TYPE fase_partida AS ENUM ('regular','upR1','upR2','upFinal','downR1','downR2','downR3','downFinal','grandFinal');
--- Tablas
-
+-- 1. TYPE primero
+CREATE TYPE posicion AS ENUM ('TOP', 'JGL', 'MID', 'ADC', 'SUPP');
+CREATE TYPE split AS ENUM ('WINTER', 'SPRING' , 'SUMMER');
 -- 2. LIGAS Y EQUIPOS
 CREATE TABLE liga (
-    nombre VARCHAR(6) PRIMARY KEY
-    
+    nombre VARCHAR(6) PRIMARY KEY,
+    split split
 );
 
 CREATE TABLE equipo (
@@ -20,6 +15,26 @@ CREATE TABLE equipo (
     nombre_liga VARCHAR(200),
     FOREIGN KEY (nombre_liga) REFERENCES liga(nombre)
 );
+
+
+CREATE TABLE campeonato_internacional(
+
+    nombre VARCHAR (100),
+    año INTEGER,
+    PRIMARY KEY (nombre, año) 
+);
+
+
+CREATE TABLE equipos_en_campeonato(
+
+    nombre_equipo VARCHAR(200),
+    nombre_campeonato VARCHAR(100),
+    año INTEGER,
+    PRIMARY KEY (nombre_equipo, nombre_campeonato, año),
+    FOREIGN KEY (nombre_equipo) REFERENCES equipo(nombre),
+    FOREIGN KEY (nombre_campeonato, año) REFERENCES campeonato_internacional(nombre, año)
+);
+
 
 -- 3. TABLAS PRINCIPALES
 CREATE TABLE jugador (
@@ -53,20 +68,18 @@ CREATE TABLE jugador_campeon (
 CREATE TABLE partida (
     id SERIAL PRIMARY KEY,
     fecha_partida TIMESTAMP,
-    equipo_rojo VARCHAR(200),
-    equipo_azul VARCHAR(200),
-    equipo_ganador VARCHAR(200),
+    equipo_rojo VARCHAR (200),
+    equipo_azul VARCHAR (200),
+    equipo_ganador VARCHAR,
     kills_equipo_azul INTEGER,
     kills_equipo_rojo INTEGER,
-    torneo VARCHAR(200),
-	split split, 
-	año int, 
-    fase fase_partida,
-
+    liga VARCHAR(200),
+    FOREIGN KEY (liga) REFERENCES liga(nombre),
     FOREIGN KEY (equipo_rojo) REFERENCES equipo(nombre),
     FOREIGN KEY (equipo_azul) REFERENCES equipo(nombre),
     FOREIGN KEY (equipo_ganador) REFERENCES equipo(nombre)
 );
+
 CREATE TABLE administrador (
 
     alias VARCHAR (100) PRIMARY KEY,
