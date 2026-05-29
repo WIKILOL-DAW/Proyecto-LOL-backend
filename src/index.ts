@@ -24,9 +24,6 @@ app.get("/health", (req, res) => {
   res.status(200).send("ok");
 });
 
-app.get("/", (req, res) => {
-  res.status(200).send("okk");
-});
 
 const api = "api/";
 app.use(`/${api}admin`, routerAdministrador );
