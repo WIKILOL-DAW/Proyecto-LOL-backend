@@ -11,7 +11,7 @@ import routerPartida from './Partida/infraestructure/rest/Partida.restController
 
 dotenv.config();
 const port = process.env.PORT;
-const allowedOrigins = ["http://localhost:5173" , "http://localhost:8080" ,"https://staging.d3eulzis7m70fx.amplifyapp.com","https://lol-front-291256530255-us-east-1-an.s3.us-east-1.amazonaws.com","https://miixvvidti.execute-api.us-east-1.amazonaws.com"];
+const allowedOrigins = ["http://localhost:5173" , "http://localhost:8080" ,"https://staging.d3eulzis7m70fx.amplifyapp.com","https://staging.d1k8xu1i0p8jpf.amplifyapp.com","https://miixvvidti.execute-api.us-east-1.amazonaws.com"];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
